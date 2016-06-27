@@ -14,6 +14,10 @@ import android.widget.RadioGroup;
 
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityMainBinding;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionInRealm;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
@@ -27,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         setSupportActionBar(mBinding.toolbar);
+
+        mBinding = DataBindingUtil.setContentView(this, R.layout.content_dashboard);
+        mBinding.add_income.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertIncome();
+            }
+        });
 
         mDrawerLayout = mBinding.drawer;
         mNavViewLeft = mBinding.navLeft;
@@ -84,5 +96,20 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void insertIncome(){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        TransactionInRealm income = realm.createObject(TransactionInRealm.class); // Create a new object
+        income.setId(9);
+        income.setDateCreated("27/06/2016");
+        income.setUnitPrice(100);
+        realm.commitTransaction();
+
+        RealmResults<TransactionInRealm> results = realm.where(TransactionInRealm.class).findAll();
+        for (TransactionInRealm u : results) {
+
+        }
     }
 }

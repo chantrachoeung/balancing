@@ -111,6 +111,11 @@
                 android:text="Insert Expence"
                 android:textColor="#ffffff" />
 
+
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/added_income"/>
     </LinearLayout>
 </layout>

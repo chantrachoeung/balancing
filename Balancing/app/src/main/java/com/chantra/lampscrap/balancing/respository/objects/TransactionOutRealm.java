@@ -8,13 +8,17 @@ import io.realm.annotations.RealmClass;
  * Created by phalla on 6/26/2016.
  */
 @RealmClass
-public class TransactionRealm extends RealmObject {
+public class TransactionOutRealm extends RealmObject {
     @PrimaryKey
     private int id;
     private int transactionType;
     private double value;
     private String dateCreated;
-    private TCategoryRealm transactionCategory;
+    private int unitPrice;
+    private double quantity;
+    private double totalAmount;
+    private CurrentcyRealm currentcy;
+    private TransactionTypeRealm transactionCategory;
 
     public int getId() {
         return id;
@@ -48,11 +52,11 @@ public class TransactionRealm extends RealmObject {
         this.dateCreated = dateCreated;
     }
 
-    public TCategoryRealm getTransactionCategory() {
+    public TransactionTypeRealm getTransactionCategory() {
         return transactionCategory;
     }
 
-    public void setTransactionCategory(TCategoryRealm transactionCategory) {
+    public void setTransactionCategory(TransactionTypeRealm transactionCategory) {
         this.transactionCategory = transactionCategory;
     }
 }
