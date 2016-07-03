@@ -8,14 +8,23 @@ import io.realm.annotations.RealmClass;
  * Created by phalla on 6/26/2016.
  */
 @RealmClass
-public class TCategoryRealm extends RealmObject {
+public class TransactionTypeRealm extends RealmObject {
     @PrimaryKey
     private int id;
     private String name;
     private int type;
+    private TransactionTypeRealm parentType;
 
     public int getId() {
         return id;
+    }
+
+    public TransactionTypeRealm getParentType() {
+        return parentType;
+    }
+
+    public void setParentType(TransactionTypeRealm parentType) {
+        this.parentType = parentType;
     }
 
     public void setId(int id) {

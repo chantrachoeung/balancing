@@ -109,6 +109,11 @@
                 android:text="Insert Expence"
                 android:theme="@style/ButtonAccent" />
 
+
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/added_income"/>
     </LinearLayout>
 </layout>
