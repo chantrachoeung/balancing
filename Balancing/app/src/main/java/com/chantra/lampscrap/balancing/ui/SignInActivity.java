@@ -21,9 +21,6 @@ import java.util.UUID;
 import io.realm.Case;
 import io.realm.Realm;
 
-/**
- * A login screen that offers login via email/password.
- */
 public class SignInActivity extends AppCompatActivity {
     private ActivitySignInBinding mBinding;
     private UserRealm userRealm;
@@ -84,7 +81,7 @@ public class SignInActivity extends AppCompatActivity {
                     userRealm.setAccessToken(accessToken);
                     SessionManager.init(getApplicationContext()).setAccessToken(accessToken);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Do you already have an account?", Toast.LENGTH_SHORT).show();
+                    throw new RuntimeException("Do you already have an account?");
                 }
             }
         }, new Realm.Transaction.OnSuccess() {

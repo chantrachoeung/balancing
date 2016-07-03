@@ -11,6 +11,7 @@ import io.realm.annotations.RealmClass;
 public class UserRealm extends RealmObject {
     @PrimaryKey
     private int id;
+
     private String name;
     private String password;
     private String signUpDate;

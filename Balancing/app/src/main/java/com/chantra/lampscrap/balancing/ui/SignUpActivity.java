@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivitySignUpBinding;
 import com.chantra.lampscrap.balancing.respository.RealmHelper;
 import com.chantra.lampscrap.balancing.respository.objects.UserRealm;
+import com.chantra.lampscrap.balancing.utils.DateUtils;
 
 import io.realm.RealmChangeListener;
 
@@ -62,13 +62,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(name)) {
             mBinding.usernameWrapper.setErrorEnabled(true);
-            mBinding.usernameWrapper.setError("User name is empty!");
+            mBinding.usernameWrapper.setError("Require username!");
             return;
         }
 
         if (TextUtils.isEmpty(pass)) {
             mBinding.passwordWrapper.setErrorEnabled(true);
-            mBinding.usernameWrapper.setError("Password is empty!");
+            mBinding.usernameWrapper.setError("Require password!");
             return;
         }
 
@@ -86,15 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
         userRealm.setId(RealmHelper.init(this).autoIncrement(UserRealm.class, "id"));
         userRealm.setName(name);
         userRealm.setPassword(pass);
-
-//        userRealm.setSignUpDate(DateUtils.getCurrentDate());
-
-        if (!userRealm.isValid()) {
-            if (null != progressDialog)
-                progressDialog.dismiss();
-            Toast.makeText(this, "Realm is invalid", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        userRealm.setSignUpDate(DateUtils.getCurrentDate());
         RealmHelper.init(this).addObject(userRealm, new RealmChangeListener() {
             @Override
             public void onChange(Object element) {
