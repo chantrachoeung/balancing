@@ -8,14 +8,13 @@ import android.content.SharedPreferences;
  */
 public class SessionManager {
     private static final String KEY_IS_LOGIN = "isLogin";
+    private static final String ACCESS_TOKEN = "accessToken";
     private static SessionManager instance;
-    private Context mContext;
 
     private SharedPreferences mShare;
     private SharedPreferences.Editor mEditor;
 
     private SessionManager(Context context) {
-        this.mContext = context;
         mShare = context.getSharedPreferences("balancing_preference", Context.MODE_PRIVATE);
         mEditor = mShare.edit();
     }
@@ -27,11 +26,19 @@ public class SessionManager {
     }
 
     public boolean isLogin() {
-        return getUserData(KEY_IS_LOGIN,false);
+        return getUserData(KEY_IS_LOGIN, false);
     }
 
     public void setIsLogin(boolean val) {
-        saveUserData(KEY_IS_LOGIN,val);
+        saveUserData(KEY_IS_LOGIN, val);
+    }
+
+    public void setAccessToken(String accessToken) {
+        saveUserData(ACCESS_TOKEN, accessToken);
+    }
+
+    public String getAccessToken() {
+        return getUserData(ACCESS_TOKEN, null);
     }
 
     public void saveUserData(String key, String value) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.Collection;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 import io.realm.RealmQuery;
@@ -37,28 +38,46 @@ public class RealmHelper {
         return mConfig;
     }
 
-    public Realm getRealm(){
+    public Realm getRealm() {
         return Realm.getInstance(getConfig());
     }
 
-    public <T extends RealmObject> void addObject(T object){
+    public <T extends RealmObject> void addObject(T object) {
         Realm realm = getRealm();
         realm.beginTransaction();
         realm.setAutoRefresh(true);
-        realm.copyFromRealm(object);
+        realm.copyToRealmOrUpdate(object);
         realm.commitTransaction();
     }
 
-    public <T extends RealmObject> void addObject(Collection<T> objects){
+    public <T extends RealmObject> void addObject(T object, RealmChangeListener listener) {
         Realm realm = getRealm();
         realm.beginTransaction();
         realm.setAutoRefresh(true);
-        realm.copyFromRealm(objects);
+        realm.addChangeListener(listener);
+        realm.copyToRealmOrUpdate(object);
         realm.commitTransaction();
     }
 
-    public <T extends RealmObject> RealmQuery<T> doQuery(Class<T> clazz){
+    public <T extends RealmObject> void addObject(Collection<T> objects) {
+        Realm realm = getRealm();
+        realm.beginTransaction();
+        realm.setAutoRefresh(true);
+        realm.copyToRealmOrUpdate(objects);
+        realm.commitTransaction();
+    }
+
+    public <T extends RealmObject> RealmQuery<T> doQuery(Class<T> clazz) {
         Realm realm = getRealm();
         return realm.where(clazz);
+    }
+
+    public <T extends RealmObject> int autoIncrement(Class<T> clazz, String field) {
+        try {
+            Realm realm = getRealm();
+            return realm.where(clazz).max(field).intValue() + 1;
+        } catch (Exception e) {
+            return 1;
+        }
     }
 }

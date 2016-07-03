@@ -1,5 +1,7 @@
 package com.chantra.lampscrap.balancing.ui;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,6 +16,12 @@ import android.widget.RadioGroup;
 
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityMainBinding;
+import com.chantra.lampscrap.balancing.respository.RealmHelper;
+import com.chantra.lampscrap.balancing.respository.objects.UserRealm;
+import com.chantra.lampscrap.balancing.utils.SessionManager;
+
+import io.realm.Case;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
@@ -25,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(mBinding.toolbar);
 
         mDrawerLayout = mBinding.drawer;
@@ -64,6 +72,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mToggle.syncState();
+
+        mBinding.btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doSigOut();
+            }
+        });
+    }
+
+    public void doSigOut() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing out...");
+        progressDialog.show();
+        final String accessToken = SessionManager.init(getApplicationContext()).getAccessToken();
+        Realm realm = RealmHelper.init(getApplicationContext()).getRealm();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                UserRealm userRealm = RealmHelper.init(getApplicationContext()).doQuery(UserRealm.class).equalTo("accessToken", accessToken, Case.SENSITIVE).findFirst();
+                if (null != userRealm)
+                    userRealm.setAccessToken("");
+                else {
+                    SessionManager.init(getApplicationContext()).reset();
+                    goLogin();
+                }
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (null != progressDialog)
+                    progressDialog.dismiss();
+                SessionManager.init(getApplicationContext()).reset();
+                goLogin();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                if (null != progressDialog)
+                    progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void goLogin() {
+        startActivity(new Intent(this, SignInActivity.class));
+        finish();
     }
 
     @Override

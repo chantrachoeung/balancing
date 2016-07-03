@@ -3,7 +3,6 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
     tools:context="com.chantra.lampscrap.balancing.ui.WelcomeActivity">
 
     <TextView
@@ -13,8 +12,8 @@
         android:gravity="center"
         android:keepScreenOn="true"
         android:text="@string/dummy_content"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
+        android:textColor="@color/white"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
 </FrameLayout>

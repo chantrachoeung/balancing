@@ -32,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
         if (SessionManager.init(this).isLogin()){
             startActivity(new Intent(this,MainActivity.class));
         }else{
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this,SignInActivity.class));
         }
         finish();
     }
