@@ -15,25 +15,26 @@
             android:paddingBottom="5dp">
 
             <ImageView
-                android:id="@+id/cloth"
+                android:id="@+id/food"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/cloth" />
+                android:src="@drawable/ic_food" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/transport" />
+                android:id="@+id/sport"
+                android:src="@drawable/ic_sport" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/telephone" />
+                android:src="@drawable/ic_shopping_cart" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/empty" />
+                android:src="@drawable/ic_transportation" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,22 +64,28 @@
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/cloth" />
+                android:id="@+id/cell_phone"
+                android:src="@drawable/ic_cell_phone" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/transport" />
+                android:id="@+id/transportation"
+                android:src="@drawable/ic_transportation" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/telephone" />
+                android:id="@+id/other"
+                android:theme="@style/dashboardIconButton"
+                android:src="@drawable/ic_shopping_cart" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/empty" />
+                android:id="@+id/accomodation"
+                android:theme="@style/dashboardIconButton"
+                android:src="@drawable/ic_accormodation" />
         </LinearLayout>
 
         <LinearLayout
