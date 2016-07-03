@@ -4,21 +4,26 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import com.chantra.lampscrap.api.adapter.BindingRecyclerAdapter;
+import com.chantra.lampscrap.api.handlers.ClickHandler;
+import com.chantra.lampscrap.balancing.BR;
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityMainBinding;
 import com.chantra.lampscrap.balancing.respository.RealmHelper;
+import com.chantra.lampscrap.balancing.respository.objects.SettingRealm;
 import com.chantra.lampscrap.balancing.respository.objects.UserRealm;
 import com.chantra.lampscrap.balancing.utils.SessionManager;
+import com.chantra.lampscrap.balancing.viewmodel.SettingViewModel;
 
 import io.realm.Case;
 import io.realm.Realm;
@@ -26,8 +31,6 @@ import io.realm.Realm;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
     private DrawerLayout mDrawerLayout;
-    private NavigationView mNavViewLeft;
-    private NavigationView mNavViewRight;
     private ActionBarDrawerToggle mToggle;
 
     @Override
@@ -37,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mBinding.toolbar);
 
         mDrawerLayout = mBinding.drawer;
-        mNavViewLeft = mBinding.navLeft;
-        mNavViewRight = mBinding.navRight;
         mBinding.navGroupLeft.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 doSigOut();
             }
         });
+        initSetting();
     }
 
     public void doSigOut() {
@@ -118,6 +120,21 @@ public class MainActivity extends AppCompatActivity {
     private void goLogin() {
         startActivity(new Intent(this, SignInActivity.class));
         finish();
+    }
+
+    private void initSetting() {
+        BindingRecyclerAdapter<SettingViewModel> recyclerAdapter = new BindingRecyclerAdapter<>(BR.setting, R.layout.item_setting);
+        mBinding.recyclerNavRight.setAdapter(recyclerAdapter);
+        mBinding.recyclerNavRight.setLayoutManager(new LinearLayoutManager(this));
+        SettingRealm settingRealm = new SettingRealm();
+        settingRealm.setName("Budget");
+        recyclerAdapter.addItem(new SettingViewModel(settingRealm));
+        recyclerAdapter.setClickHandler(new ClickHandler<SettingViewModel>() {
+            @Override
+            public void onClick(SettingViewModel item) {
+                item.launch(MainActivity.this);
+            }
+        });
     }
 
     @Override

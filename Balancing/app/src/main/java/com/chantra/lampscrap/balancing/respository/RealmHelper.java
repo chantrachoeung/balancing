@@ -59,13 +59,13 @@ public class RealmHelper {
         realm.commitTransaction();
     }
 
-    public <T extends RealmObject> void createUpdate(T object) {
-        Realm realm = getRealm();
-        realm.beginTransaction();
-        realm.setAutoRefresh(true);
-        realm.copyToRealmOrUpdate(object);
-        realm.commitTransaction();
-    }
+//    public <T extends RealmObject> void createUpdate(T object) {
+//        Realm realm = getRealm();
+//        realm.beginTransaction();
+//        realm.setAutoRefresh(true);
+//        realm.copyToRealmOrUpdate(object);
+//        realm.commitTransaction();
+//    }
 
     public <T extends RealmObject> void addObject(Collection<T> objects) {
         Realm realm = getRealm();
