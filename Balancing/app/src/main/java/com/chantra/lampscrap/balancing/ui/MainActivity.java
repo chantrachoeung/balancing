@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.chantra.lampscrap.api.adapter.BindingRecyclerAdapter;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
@@ -29,6 +30,8 @@ import io.realm.Case;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
+    private final static int REQUEST_ADD_INCOME = 100;
+    private final static int REQUEST_ADD_EXPENSE = 200;
     private ActivityMainBinding mBinding;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         initSetting();
+        initTransaction();
     }
 
     public void doSigOut() {
@@ -120,6 +124,44 @@ public class MainActivity extends AppCompatActivity {
     private void goLogin() {
         startActivity(new Intent(this, SignInActivity.class));
         finish();
+    }
+
+    private void initTransaction() {
+        mBinding.contentDashboard.addIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_INCOME);
+            }
+        });
+
+        mBinding.contentDashboard.addExpend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_ADD_EXPENSE:
+                    Toast.makeText(this, "Expense", Toast.LENGTH_SHORT).show();
+                    break;
+                case REQUEST_ADD_INCOME:
+                    Toast.makeText(this, "Income", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        } else {
+            Toast.makeText(this, "Canceled Request", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void launchTransactionActivity(int requestCode) {
+        Intent intent = new Intent(this, TransactionActivity.class);
+        startActivityForResult(intent, requestCode);
     }
 
     private void initSetting() {
