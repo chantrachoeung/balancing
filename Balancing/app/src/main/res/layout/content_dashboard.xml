@@ -44,11 +44,20 @@
             android:gravity="center"
             android:paddingBottom="5dp">
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:padding="20dp"
-                android:id="@+id/pie_chart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <FrameLayout
+                android:background="@drawable/bg_circle_gradient_ouline"
+                android:padding="40dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:background="@drawable/bg_circle_gradient"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+            </FrameLayout>
 
             <!--<ImageView-->
             <!--android:layout_width="wrap_content"-->
