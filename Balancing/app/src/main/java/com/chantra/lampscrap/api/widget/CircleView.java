@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class CircleView extends View {
-    private static final int DEFAULT_CIRCLE_COLOR = Color.DKGRAY;
+    private static final int DEFAULT_CIRCLE_COLOR = Color.GRAY;
 
     private int circleColor = DEFAULT_CIRCLE_COLOR;
     private Paint paint;
