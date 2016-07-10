@@ -1,13 +1,17 @@
 package com.chantra.lampscrap.balancing.ui;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -16,11 +20,19 @@ import com.chantra.lampscrap.balancing.databinding.ActivityTransactionBinding;
 import com.chantra.lampscrap.balancing.respository.RealmHelper;
 import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class TransactionActivity extends AppCompatActivity {
-
+    private final String IS_EXPENSE = "is_expense";
     private ActivityTransactionBinding mBinding;
+
+    public static void launch(Activity activity, int requestCode, boolean expense) {
+        Intent intent = new Intent(activity, TransactionActivity.class);
+        intent.putExtra(IS_EXPENSE, expense);
+        activity.startActivityForResult(intent, requestCode);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +41,8 @@ public class TransactionActivity extends AppCompatActivity {
         setSupportActionBar(mBinding.toolBar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setDateView(getCurrentDate(Calendar.getInstance().getTime()));
 
         Toast.makeText(this, "TType : " + RealmHelper.init(this).doQuery(TransactionTypeRealm.class).findAll().size(), Toast.LENGTH_SHORT).show();
 
@@ -45,6 +59,10 @@ public class TransactionActivity extends AppCompatActivity {
                 onSubmit();
             }
         });
+    }
+
+    private void setDateView(String date) {
+        mBinding.tvDateTime.setText(date);
     }
 
     public void onSubmit() {
@@ -85,8 +103,27 @@ public class TransactionActivity extends AppCompatActivity {
         DatePickerDialog dialog = new DatePickerDialog(TransactionActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                setDateView(getCurrentDate(c.getTime()));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+        // Setting dialogview
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.CENTER);
+        window.setDimAmount(1f);
+
+        window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
         dialog.show();
+    }
+
+    private String getCurrentDate(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE,dd MMMM");
+        String currentDate = formatter.format(date);
+        return currentDate;
     }
 }

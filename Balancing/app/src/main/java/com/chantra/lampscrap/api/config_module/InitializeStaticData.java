@@ -40,6 +40,10 @@ public class InitializeStaticData {
         transactionTypeRealm.setId(1);
         transactionTypeRealm.setName("Accommodation");
 
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(2);
+        transactionTypeRealm.setName("Food");
+
         RealmHelper.init(context).addObject(transactionTypeRealm);
     }
 }

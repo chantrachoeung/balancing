@@ -131,14 +131,14 @@ public class MainActivity extends AppCompatActivity {
         mBinding.contentDashboard.addIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_INCOME);
+                launchTransactionActivity(REQUEST_ADD_INCOME, false);
             }
         });
 
         mBinding.contentDashboard.addExpend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_EXPENSE);
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true);
             }
         });
     }
@@ -166,12 +166,11 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 mBinding.contentDashboard.circleViewBalance.setCircleColor(Color.DKGRAY);
             }
-        },1000);
+        }, 1000);
     }
 
-    private void launchTransactionActivity(int requestCode) {
-        Intent intent = new Intent(this, TransactionActivity.class);
-        startActivityForResult(intent, requestCode);
+    private void launchTransactionActivity(int requestCode, boolean expense) {
+        TransactionActivity.launch(this, requestCode, expense);
     }
 
     private void initSetting() {
