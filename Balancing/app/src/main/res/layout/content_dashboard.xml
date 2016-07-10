@@ -44,14 +44,18 @@
             android:gravity="center"
             android:paddingBottom="5dp">
 
-            <com.chantra.lampscrap.api.widget.CircleFrameLayout
-                android:id="@+id/circle_view_balance"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:background="@drawable/bg_circle_gradient_ouline"
-                android:padding="40dp">
+
+            <FrameLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp">
+
+                <com.chantra.lampscrap.api.widget.CircleView
+                    android:id="@+id/circle_view_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
                 <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_margin="35dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_circle_gradient"
@@ -73,7 +77,7 @@
 
                 </android.support.v7.widget.LinearLayoutCompat>
 
-            </com.chantra.lampscrap.api.widget.CircleFrameLayout>
+            </FrameLayout>
 
             <!--<ImageView-->
             <!--android:layout_width="wrap_content"-->

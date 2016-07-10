@@ -5,46 +5,40 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.view.View;
 
-public class CircleFrameLayout extends FrameLayout
-{
+public class CircleView extends View {
     private static final int DEFAULT_CIRCLE_COLOR = Color.DKGRAY;
 
     private int circleColor = DEFAULT_CIRCLE_COLOR;
     private Paint paint;
 
-    public CircleFrameLayout(Context context)
-    {
+    public CircleView(Context context) {
         super(context);
         init(context, null);
     }
 
-    public CircleFrameLayout(Context context, AttributeSet attrs)
-    {
+    public CircleView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs)
-    {
+    private void init(Context context, AttributeSet attrs) {
         paint = new Paint();
         paint.setAntiAlias(true);
     }
 
-    public void setCircleColor(int circleColor)
-    {
+    public void setCircleColor(int circleColor) {
         this.circleColor = circleColor;
         invalidate();
     }
 
-    public int getCircleColor()
-    {
+    public int getCircleColor() {
         return circleColor;
     }
 
-    protected void onDraw(Canvas canvas)
-    {
+    @Override
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         int w = getWidth();
