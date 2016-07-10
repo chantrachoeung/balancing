@@ -38,10 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".ui.TransactionActivity"></activity>
+        <activity android:name=".ui.TransactionActivity"></activity>
     </application>
 
 </manifest>
