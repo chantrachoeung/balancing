@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,14 +24,22 @@ import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityMainBinding;
 import com.chantra.lampscrap.balancing.mapping.TType;
 import com.chantra.lampscrap.balancing.respository.RealmHelper;
+import com.chantra.lampscrap.balancing.respository.objects.CurrentcyRealm;
 import com.chantra.lampscrap.balancing.respository.objects.SettingRealm;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionInRealm;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionOutRealm;
 import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
 import com.chantra.lampscrap.balancing.respository.objects.UserRealm;
+import com.chantra.lampscrap.balancing.utils.DateUtils;
 import com.chantra.lampscrap.balancing.utils.SessionManager;
 import com.chantra.lampscrap.balancing.viewmodel.SettingViewModel;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ADD_INCOME = 100;
@@ -152,15 +161,15 @@ public class MainActivity extends AppCompatActivity {
 
             TType tType = new TType();
             TransactionTypeRealm typeRealm = tType.get(data.getExtras());
-
+            int price = data.getExtras().getInt("price");
             switch (requestCode) {
                 case REQUEST_ADD_EXPENSE:
-                    mBinding.contentDashboard.circleViewBalance.setCircleColor(Color.RED);
-                    Toast.makeText(this, "Expense : " + typeRealm.getName(), Toast.LENGTH_SHORT).show();
+                    mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                    doTransaction(typeRealm, price, true);
                     break;
                 case REQUEST_ADD_INCOME:
-                    mBinding.contentDashboard.circleViewBalance.setCircleColor(Color.BLUE);
-                    Toast.makeText(this, "Income : " + typeRealm.getName(), Toast.LENGTH_SHORT).show();
+                    mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
+                    doTransaction(typeRealm, price, false);
                     break;
             }
         } else {
@@ -212,5 +221,49 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense) {
+        if (!expense) {
+            TransactionInRealm transaction = new TransactionInRealm();
+            transaction.setId(1);
+            transaction.setCurrentcy(new CurrentcyRealm());
+            transaction.setTransactionType(0);
+            transaction.setUnitPrice(price);
+            transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTransactionCategory(typeRealm);
+            RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
+        } else {
+            TransactionOutRealm transaction = new TransactionOutRealm();
+            transaction.setId(1);
+            transaction.setValue(price);
+            transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTransactionCategory(typeRealm);
+            transaction.setTransactionType(1);
+            RealmHelper.init(this).addObject(transaction, transactionOutRealmChangeListener);
+        }
+    }
+
+    private RealmChangeListener transactionInRealmChangeListener = new RealmChangeListener<Realm>() {
+        @Override
+        public void onChange(Realm realm) {
+            TransactionInRealm transactionInRealm = RealmHelper.init(MainActivity.this).doQuery(TransactionInRealm.class).findFirst();
+            mBinding.contentDashboard.currentBalance.setText(currentFormat(transactionInRealm.getUnitPrice()));
+//            mBinding.contentDashboard.currentExpanse.setText(currentFormat(element.getValue()));
+        }
+    };
+
+    private RealmChangeListener transactionOutRealmChangeListener = new RealmChangeListener<Realm>() {
+        @Override
+        public void onChange(Realm realm) {
+            TransactionOutRealm transactionOutRealm = RealmHelper.init(MainActivity.this).doQuery(TransactionOutRealm.class).findFirst();
+            mBinding.contentDashboard.currentExpanse.setText(currentFormat(transactionOutRealm.getValue()));
+//            mBinding.contentDashboard.currentBalance.setText(String.format("%2d", element.getValue()));
+        }
+    };
+
+    private String currentFormat(double price) {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
+        return numberFormat.format(price);
     }
 }

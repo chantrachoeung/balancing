@@ -52,12 +52,12 @@
                 <com.chantra.lampscrap.api.widget.CircleView
                     android:id="@+id/circle_view_balance"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
                 <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_margin="35dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="35dp"
                     android:background="@drawable/bg_circle_gradient"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -66,14 +66,19 @@
                         android:id="@+id/current_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="200$"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:hint="$20.00"
+                        android:padding="2dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18dp" />
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/new_balance"
+                        android:id="@+id/current_expanse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="200$" />
+                        android:hint="$20.00"
+                        android:padding="2dp"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18dp" />
 
                 </android.support.v7.widget.LinearLayoutCompat>
 

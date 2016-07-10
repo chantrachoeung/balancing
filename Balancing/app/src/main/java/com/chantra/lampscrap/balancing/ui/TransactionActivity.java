@@ -156,7 +156,9 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
             return;
 
         Intent intent = new Intent();
-        intent.putExtras(tType.toData());
+        Bundle bundle = tType.toData();
+        bundle.putInt("price", Integer.valueOf(mBinding.edtTransactionAmount.getText().toString()));
+        intent.putExtras(bundle);
         setResult(RESULT_OK, intent);
         finish();
     }

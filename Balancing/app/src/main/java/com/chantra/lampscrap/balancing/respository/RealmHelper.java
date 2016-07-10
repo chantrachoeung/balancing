@@ -50,7 +50,7 @@ public class RealmHelper {
         realm.commitTransaction();
     }
 
-    public <T extends RealmObject> void addObject(T object, RealmChangeListener listener) {
+    public <T extends RealmObject> void addObject(T object, RealmChangeListener<Realm> listener) {
         Realm realm = getRealm();
         realm.beginTransaction();
         realm.setAutoRefresh(true);
