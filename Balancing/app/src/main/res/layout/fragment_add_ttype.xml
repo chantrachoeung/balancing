@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="ttypes"
+            type="com.chantra.lampscrap.balancing.viewmodel.TTypesViewModel" />
+
+        <variable
+            name="view"
+            type="com.chantra.lampscrap.balancing.ui.fragments.TTypeAddFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tran_add_wrapp_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tran_add_category_name"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="Add Category Name"
+                android:imeOptions="actionDone"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true">
+
+                <requestFocus />
+
+            </android.support.design.widget.TextInputEditText>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:clickHandler="@{view.clickHandler}"
+            app:itemSpace="@{8}"
+            app:itemViewBinder="@{view.itemViewBinder}"
+            app:items="@{ttypes.items}"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3" />
+
+    </LinearLayout>
+</layout>

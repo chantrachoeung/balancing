@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
@@ -13,19 +15,21 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityTransactionBinding;
-import com.chantra.lampscrap.balancing.respository.RealmHelper;
-import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
+import com.chantra.lampscrap.balancing.mapping.TType;
+import com.chantra.lampscrap.balancing.ui.fragments.OnTypeFragmentListener;
+import com.chantra.lampscrap.balancing.ui.fragments.TTypeAddFragment;
+import com.chantra.lampscrap.balancing.ui.fragments.TTypeViewFragment;
+import com.chantra.lampscrap.balancing.viewmodel.TTypeViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TransactionActivity extends AppCompatActivity {
-    private final String IS_EXPENSE = "is_expense";
+public class TransactionActivity extends AppCompatActivity implements OnTypeFragmentListener<TTypeViewModel> {
+    private final static String IS_EXPENSE = "is_expense";
     private ActivityTransactionBinding mBinding;
 
     public static void launch(Activity activity, int requestCode, boolean expense) {
@@ -43,8 +47,7 @@ public class TransactionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setDateView(getCurrentDate(Calendar.getInstance().getTime()));
-
-        Toast.makeText(this, "TType : " + RealmHelper.init(this).doQuery(TransactionTypeRealm.class).findAll().size(), Toast.LENGTH_SHORT).show();
+        loadType();
 
         mBinding.tvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +59,6 @@ public class TransactionActivity extends AppCompatActivity {
         mBinding.tranClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSubmit();
             }
         });
     }
@@ -65,10 +67,15 @@ public class TransactionActivity extends AppCompatActivity {
         mBinding.tvDateTime.setText(date);
     }
 
-    public void onSubmit() {
-        Intent intent = new Intent();
-        setResult(RESULT_OK, intent);
-        finish();
+    private void loadType() {
+        boolean is_expense = getIntent().getBooleanExtra(IS_EXPENSE, false);
+        loadFragment(new TTypeViewFragment());
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(mBinding.ttypeContainer.getId(), fragment);
+        transaction.commit();
     }
 
     @Override
@@ -114,7 +121,6 @@ public class TransactionActivity extends AppCompatActivity {
         // Setting dialogview
         Window window = dialog.getWindow();
         window.setGravity(Gravity.CENTER);
-        window.setDimAmount(1f);
 
         window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(true);
@@ -122,8 +128,36 @@ public class TransactionActivity extends AppCompatActivity {
     }
 
     private String getCurrentDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("EEEE,dd MMMM");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd MMMM");
         String currentDate = formatter.format(date);
         return currentDate;
+    }
+
+    @Override
+    public void onAction(int action, TTypeViewModel item) {
+        TType tType = new TType();
+        switch (action) {
+            case ACTION_ADDED:
+            case ACTION_SELECTED:
+                tType.put(item.getModel());
+                break;
+            case ACTION_GO_ADD:
+                mBinding.tranNote.animate().alpha(0).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        mBinding.tranNote.setVisibility(View.GONE);
+                    }
+                });
+                loadFragment(new TTypeAddFragment());
+                break;
+        }
+
+        if (null == item)
+            return;
+
+        Intent intent = new Intent();
+        intent.putExtras(tType.toData());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

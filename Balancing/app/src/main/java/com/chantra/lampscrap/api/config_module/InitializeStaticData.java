@@ -2,9 +2,13 @@ package com.chantra.lampscrap.api.config_module;
 
 import android.content.Context;
 
+import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.respository.RealmHelper;
 import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
 import com.chantra.lampscrap.balancing.utils.SessionManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by phearom on 7/10/16.
@@ -36,14 +40,25 @@ public class InitializeStaticData {
     }
 
     private void initTransactionType() {
+        List<TransactionTypeRealm> list = new ArrayList<>();
         TransactionTypeRealm transactionTypeRealm = new TransactionTypeRealm();
         transactionTypeRealm.setId(1);
+        transactionTypeRealm.setIcon(R.drawable.ic_accormodation);
         transactionTypeRealm.setName("Accommodation");
+        list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
         transactionTypeRealm.setId(2);
+        transactionTypeRealm.setIcon(R.drawable.ic_food);
         transactionTypeRealm.setName("Food");
+        list.add(transactionTypeRealm);
 
-        RealmHelper.init(context).addObject(transactionTypeRealm);
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(3);
+        transactionTypeRealm.setIcon(R.drawable.ic_food_drink);
+        transactionTypeRealm.setName("Drink");
+        list.add(transactionTypeRealm);
+
+        RealmHelper.init(context).addObject(list);
     }
 }

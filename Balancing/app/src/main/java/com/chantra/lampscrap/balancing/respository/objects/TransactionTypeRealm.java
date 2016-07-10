@@ -12,6 +12,7 @@ public class TransactionTypeRealm extends RealmObject {
     @PrimaryKey
     private int id;
     private String name;
+    private Integer icon;
     private int type;
     private TransactionTypeRealm parentType;
 
@@ -37,6 +38,14 @@ public class TransactionTypeRealm extends RealmObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Integer icon) {
+        this.icon = icon;
     }
 
     public int getType() {

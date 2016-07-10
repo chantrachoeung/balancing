@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="ttypes"
+            type="com.chantra.lampscrap.balancing.viewmodel.TTypesViewModel" />
+
+        <variable
+            name="view"
+            type="com.chantra.lampscrap.balancing.ui.fragments.TTypeViewFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:clickHandler="@{view.clickHandler}"
+            app:itemViewBinder="@{view.itemViewBinder}"
+            app:items="@{ttypes.items}"
+            app:itemSpace="@{8}"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:theme="@style/ButtonDefault"
+            android:id="@+id/add_category"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:foreground="?selectableItemBackground"
+            android:text="Add Category"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+</layout>

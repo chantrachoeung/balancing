@@ -25,12 +25,13 @@
             android:id="@+id/nested_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.AppCompatTextView
@@ -39,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:hint="Monday, 4 July"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:textColor="@color/colorPrimary" />
 
                 <android.support.v7.widget.LinearLayoutCompat
@@ -69,7 +70,12 @@
                         android:background="@android:color/transparent"
                         android:gravity="center"
                         android:inputType="numberDecimal"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColorHint="@color/white"
+                        android:theme="@style/EditTextPrimary">
+
+                        <requestFocus />
+                    </android.support.v7.widget.AppCompatEditText>
 
                     <android.support.v7.widget.AppCompatImageView
                         android:id="@+id/tran_clear"
@@ -81,13 +87,26 @@
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/tran_note"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_margin="20dp"
-                    android:drawableLeft="@drawable/ic_edit_primary">
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:drawableLeft="@drawable/ic_edit_primary"
+                    android:hint="Note"
+                    android:imeOptions="actionDone"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColorHint="@color/colorPrimary" />
 
-                    <requestFocus />
-                </android.support.v7.widget.AppCompatEditText>
+                <FrameLayout
+                    android:id="@+id/ttype_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1" />
 
             </android.support.v7.widget.LinearLayoutCompat>
 

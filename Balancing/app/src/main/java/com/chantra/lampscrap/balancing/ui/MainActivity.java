@@ -21,8 +21,10 @@ import com.chantra.lampscrap.api.handlers.ClickHandler;
 import com.chantra.lampscrap.balancing.BR;
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityMainBinding;
+import com.chantra.lampscrap.balancing.mapping.TType;
 import com.chantra.lampscrap.balancing.respository.RealmHelper;
 import com.chantra.lampscrap.balancing.respository.objects.SettingRealm;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
 import com.chantra.lampscrap.balancing.respository.objects.UserRealm;
 import com.chantra.lampscrap.balancing.utils.SessionManager;
 import com.chantra.lampscrap.balancing.viewmodel.SettingViewModel;
@@ -147,14 +149,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+
+            TType tType = new TType();
+            TransactionTypeRealm typeRealm = tType.get(data.getExtras());
+
             switch (requestCode) {
                 case REQUEST_ADD_EXPENSE:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(Color.RED);
-                    Toast.makeText(this, "Expense", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Expense : " + typeRealm.getName(), Toast.LENGTH_SHORT).show();
                     break;
                 case REQUEST_ADD_INCOME:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(Color.BLUE);
-                    Toast.makeText(this, "Income", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Income : " + typeRealm.getName(), Toast.LENGTH_SHORT).show();
                     break;
             }
         } else {
