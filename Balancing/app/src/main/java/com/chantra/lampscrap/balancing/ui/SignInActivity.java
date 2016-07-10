@@ -91,7 +91,7 @@ public class SignInActivity extends AppCompatActivity {
                     progressDialog.dismiss();
 
                 SessionManager.init(getApplicationContext()).setIsLogin(true);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), WelcomeActivity.class));
                 finish();
             }
         }, new Realm.Transaction.OnError() {

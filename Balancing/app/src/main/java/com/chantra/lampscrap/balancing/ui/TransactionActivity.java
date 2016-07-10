@@ -9,9 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityTransactionBinding;
+import com.chantra.lampscrap.balancing.respository.RealmHelper;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
 
 import java.util.Calendar;
 
@@ -26,6 +29,8 @@ public class TransactionActivity extends AppCompatActivity {
         setSupportActionBar(mBinding.toolBar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Toast.makeText(this, "TType : " + RealmHelper.init(this).doQuery(TransactionTypeRealm.class).findAll().size(), Toast.LENGTH_SHORT).show();
 
         mBinding.tvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
