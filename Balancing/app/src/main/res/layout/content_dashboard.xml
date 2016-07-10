@@ -44,20 +44,36 @@
             android:gravity="center"
             android:paddingBottom="5dp">
 
-            <FrameLayout
-                android:background="@drawable/bg_circle_gradient_ouline"
-                android:padding="40dp"
+            <com.chantra.lampscrap.api.widget.CircleFrameLayout
+                android:id="@+id/circle_view_balance"
                 android:layout_width="250dp"
-                android:layout_height="250dp">
+                android:layout_height="250dp"
+                android:background="@drawable/bg_circle_gradient_ouline"
+                android:padding="40dp">
 
                 <android.support.v7.widget.LinearLayoutCompat
-                    android:background="@drawable/bg_circle_gradient"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_circle_gradient"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/current_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="200$"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/new_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="200$" />
 
                 </android.support.v7.widget.LinearLayoutCompat>
 
-            </FrameLayout>
+            </com.chantra.lampscrap.api.widget.CircleFrameLayout>
 
             <!--<ImageView-->
             <!--android:layout_width="wrap_content"-->
