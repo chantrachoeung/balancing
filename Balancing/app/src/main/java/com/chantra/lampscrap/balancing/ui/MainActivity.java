@@ -40,6 +40,7 @@ import java.util.Locale;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ADD_INCOME = 100;
@@ -136,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
     private void goLogin() {
         startActivity(new Intent(this, SignInActivity.class));
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateBalance();
     }
 
     private void initTransaction() {
@@ -247,23 +254,38 @@ public class MainActivity extends AppCompatActivity {
     private RealmChangeListener transactionInRealmChangeListener = new RealmChangeListener<Realm>() {
         @Override
         public void onChange(Realm realm) {
-            TransactionInRealm transactionInRealm = RealmHelper.init(MainActivity.this).doQuery(TransactionInRealm.class).findFirst();
-            mBinding.contentDashboard.currentBalance.setText(currentFormat(transactionInRealm.getUnitPrice()));
-//            mBinding.contentDashboard.currentExpanse.setText(currentFormat(element.getValue()));
+            updateBalance();
         }
     };
 
     private RealmChangeListener transactionOutRealmChangeListener = new RealmChangeListener<Realm>() {
         @Override
         public void onChange(Realm realm) {
-            TransactionOutRealm transactionOutRealm = RealmHelper.init(MainActivity.this).doQuery(TransactionOutRealm.class).findFirst();
-            mBinding.contentDashboard.currentExpanse.setText(currentFormat(transactionOutRealm.getValue()));
-//            mBinding.contentDashboard.currentBalance.setText(String.format("%2d", element.getValue()));
+            updateBalance();
         }
     };
 
     private String currentFormat(double price) {
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
         return numberFormat.format(price);
+    }
+
+    private void updateBalance() {
+        RealmResults<TransactionInRealm> inRealms = RealmHelper.init(this).doQuery(TransactionInRealm.class).findAll();
+        RealmResults<TransactionOutRealm> outRealms = RealmHelper.init(this).doQuery(TransactionOutRealm.class).findAll();
+
+        double tExpense = 0;
+        double tIncome = 0;
+
+        for (TransactionInRealm tIn : inRealms) {
+            tIncome += tIn.getUnitPrice();
+        }
+
+        for (TransactionOutRealm tOut : outRealms) {
+            tExpense += tOut.getValue();
+        }
+
+        mBinding.contentDashboard.currentExpanse.setText(currentFormat(tExpense));
+        mBinding.contentDashboard.currentBalance.setText(currentFormat(tIncome));
     }
 }
