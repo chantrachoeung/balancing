@@ -18,23 +18,28 @@
                 android:id="@+id/food"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_food" />
+                android:style=""
+                android:src="@drawable/ic_food"
+                android:theme="@style/dashboardIconButton" />
 
             <ImageView
                 android:id="@+id/sport"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_sport" />
+                android:src="@drawable/ic_sport"
+                android:theme="@style/dashboardIconButton" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_shopping_cart" />
+                android:src="@drawable/ic_shopping_cart"
+                android:theme="@style/dashboardIconButton" />
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_transportation" />
+                android:src="@drawable/ic_transportation"
+                android:theme="@style/dashboardIconButton" />
         </LinearLayout>
 
         <LinearLayout
@@ -42,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingBottom="5dp">
+            android:paddingBottom="2dp">
 
 
             <FrameLayout
@@ -96,13 +101,15 @@
                 android:id="@+id/cell_phone"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_cell_phone" />
+                android:src="@drawable/ic_cell_phone"
+                android:theme="@style/dashboardIconButton"/>
 
             <ImageView
                 android:id="@+id/transportation"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_transportation" />
+                android:src="@drawable/ic_transportation"
+                android:theme="@style/dashboardIconButton" />
 
             <ImageView
                 android:id="@+id/other"
