@@ -18,7 +18,6 @@
                 android:id="@+id/food"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:style=""
                 android:src="@drawable/ic_food"
                 android:theme="@style/dashboardIconButton" />
 
