@@ -69,6 +69,8 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
 
     private void loadType() {
         boolean is_expense = getIntent().getBooleanExtra(IS_EXPENSE, false);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("is_expense",is_expense);
         loadFragment(new TTypeViewFragment());
     }
 

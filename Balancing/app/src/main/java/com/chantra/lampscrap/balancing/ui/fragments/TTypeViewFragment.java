@@ -22,6 +22,7 @@ import com.chantra.lampscrap.balancing.viewmodel.TTypeViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TTypesViewModel;
 
 import io.realm.RealmResults;
+import io.realm.RealmQuery;
 
 /**
  * Created by phearom on 7/10/16.
@@ -66,7 +67,14 @@ public class TTypeViewFragment extends Fragment {
     }
 
     private void initCategories() {
+        Bundle bundle = this.getArguments();
+        Boolean is_expense = bundle.getBoolean("is_expense");
+        int typeId = 1;
+        if(is_expense){
+            typeId = 0;
+        }
         RealmResults<TransactionTypeRealm> typeRealms = RealmHelper.init(getContext()).doQuery(TransactionTypeRealm.class).findAll();
+        //RealmResults<TransactionTypeRealm> typeRealms = realm.where(TransactionTypeRealm.class).equalTo("type", typeId).findAll();
         for (TransactionTypeRealm type : typeRealms) {
             tTypesViewModel.add(new TTypeViewModel(type));
         }
