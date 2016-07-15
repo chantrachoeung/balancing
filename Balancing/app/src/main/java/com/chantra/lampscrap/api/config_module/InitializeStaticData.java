@@ -45,18 +45,56 @@ public class InitializeStaticData {
         transactionTypeRealm.setId(1);
         transactionTypeRealm.setIcon(R.drawable.ic_accormodation);
         transactionTypeRealm.setName("Accommodation");
+        transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
         transactionTypeRealm.setId(2);
         transactionTypeRealm.setIcon(R.drawable.ic_food);
-        transactionTypeRealm.setName("Food");
+        transactionTypeRealm.setName("Food & Beverage");
+        transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
         transactionTypeRealm.setId(3);
         transactionTypeRealm.setIcon(R.drawable.ic_food_drink);
         transactionTypeRealm.setName("Drink");
+        transactionTypeRealm.setType(0);
+        list.add(transactionTypeRealm);
+
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(4);
+        transactionTypeRealm.setIcon(R.drawable.ic_health);
+        transactionTypeRealm.setName("Health Care");
+        transactionTypeRealm.setType(0);
+        list.add(transactionTypeRealm);
+
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(5);
+        transactionTypeRealm.setIcon(R.drawable.ic_cell_phone);
+        transactionTypeRealm.setName("Mobile");
+        transactionTypeRealm.setType(0);
+        list.add(transactionTypeRealm);
+
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(6);
+        transactionTypeRealm.setIcon(R.drawable.ic_transportation);
+        transactionTypeRealm.setName("Transportation");
+        transactionTypeRealm.setType(0);
+        list.add(transactionTypeRealm);
+
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(7);
+        transactionTypeRealm.setIcon(R.drawable.ic_shopping_cart);
+        transactionTypeRealm.setName("Other");
+        transactionTypeRealm.setType(0);
+        list.add(transactionTypeRealm);
+
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(8);
+        transactionTypeRealm.setIcon(R.drawable.ic_sport);
+        transactionTypeRealm.setName("Sport & Gym");
+        transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         RealmHelper.init(context).addObject(list);

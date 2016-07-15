@@ -46,6 +46,7 @@ import io.realm.RealmResults;
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ADD_INCOME = 100;
     private final static int REQUEST_ADD_EXPENSE = 200;
+    
     private ActivityMainBinding mBinding;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
