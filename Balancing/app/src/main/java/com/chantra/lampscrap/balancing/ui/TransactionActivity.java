@@ -30,11 +30,13 @@ import java.util.Date;
 
 public class TransactionActivity extends AppCompatActivity implements OnTypeFragmentListener<TTypeViewModel> {
     private final static String IS_EXPENSE = "is_expense";
+    private final static String TYPE_ID = "type_id";
     private ActivityTransactionBinding mBinding;
 
-    public static void launch(Activity activity, int requestCode, boolean expense) {
+    public static void launch(Activity activity, int requestCode, boolean expense, int typeId) {
         Intent intent = new Intent(activity, TransactionActivity.class);
         intent.putExtra(IS_EXPENSE, expense);
+        intent.putExtra(TYPE_ID,typeId);
         activity.startActivityForResult(intent, requestCode);
     }
 

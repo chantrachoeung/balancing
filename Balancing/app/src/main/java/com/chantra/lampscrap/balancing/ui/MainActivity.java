@@ -46,7 +46,7 @@ import io.realm.RealmResults;
 public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_ADD_INCOME = 100;
     private final static int REQUEST_ADD_EXPENSE = 200;
-    
+
     private ActivityMainBinding mBinding;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -151,16 +151,23 @@ public class MainActivity extends AppCompatActivity {
         mBinding.contentDashboard.addIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_INCOME, false);
+                launchTransactionActivity(REQUEST_ADD_INCOME, false, 0);
             }
         });
 
         mBinding.contentDashboard.addExpend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_EXPENSE, true);
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 0);
             }
         });
+
+       /* mBinding.contentDashboard.cellPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 5);
+            }
+        });*/
     }
 
     @Override
@@ -194,8 +201,8 @@ public class MainActivity extends AppCompatActivity {
         }, 1000);
     }
 
-    private void launchTransactionActivity(int requestCode, boolean expense) {
-        TransactionActivity.launch(this, requestCode, expense);
+    private void launchTransactionActivity(int requestCode, boolean expense, int typeId) {
+        TransactionActivity.launch(this, requestCode, expense, typeId);
     }
 
     private void initSetting() {
