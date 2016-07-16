@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.chantra.lampscrap.api.binder.CompositeItemBinder;
 import com.chantra.lampscrap.api.binder.ItemBinder;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
+import com.chantra.lampscrap.api.key.K;
 import com.chantra.lampscrap.balancing.BR;
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.binder.TTypeBinder;
@@ -22,7 +23,6 @@ import com.chantra.lampscrap.balancing.viewmodel.TTypeViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TTypesViewModel;
 
 import io.realm.RealmResults;
-import io.realm.RealmQuery;
 
 /**
  * Created by phearom on 7/10/16.
@@ -31,6 +31,8 @@ public class TTypeViewFragment extends Fragment {
     private FragmentViewTtypeBinding mBinding;
     private OnTypeFragmentListener<TTypeViewModel> onTypeFragmentListener;
     private TTypesViewModel tTypesViewModel;
+
+    private K.TType mTType = K.TType.INCOME;
 
     @Override
     public void onAttach(Context context) {
@@ -66,11 +68,13 @@ public class TTypeViewFragment extends Fragment {
         });
     }
 
+    public void setTType(K.TType tType) {
+        this.mTType = tType;
+    }
+
     private void initCategories() {
-        Bundle bundle = this.getArguments();
-        Boolean is_expense = bundle.getBoolean("is_expense");
         int typeId = 1;
-        if(is_expense){
+        if (mTType == K.TType.EXPENSE) {
             typeId = 0;
         }
         RealmResults<TransactionTypeRealm> typeRealms = RealmHelper.init(getContext()).doQuery(TransactionTypeRealm.class).findAll();

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 
+import com.chantra.lampscrap.api.key.K;
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityTransactionBinding;
 import com.chantra.lampscrap.balancing.mapping.TType;
@@ -29,14 +31,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TransactionActivity extends AppCompatActivity implements OnTypeFragmentListener<TTypeViewModel> {
-    private final static String IS_EXPENSE = "is_expense";
-    private final static String TYPE_ID = "type_id";
     private ActivityTransactionBinding mBinding;
 
     public static void launch(Activity activity, int requestCode, boolean expense, int typeId) {
         Intent intent = new Intent(activity, TransactionActivity.class);
-        intent.putExtra(IS_EXPENSE, expense);
-        intent.putExtra(TYPE_ID,typeId);
+        intent.putExtra(K.IS_EXPENSE, expense);
+        intent.putExtra(K.TYPE_ID, typeId);
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -69,11 +69,18 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         mBinding.tvDateTime.setText(date);
     }
 
+    private boolean isExpense() {
+        try {
+            return getIntent().getBooleanExtra(K.IS_EXPENSE, false);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private void loadType() {
-        boolean is_expense = getIntent().getBooleanExtra(IS_EXPENSE, false);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("is_expense",is_expense);
-        loadFragment(new TTypeViewFragment());
+        TTypeViewFragment fragment = new TTypeViewFragment();
+        fragment.setTType(isExpense() ? K.TType.EXPENSE : K.TType.INCOME);
+        loadFragment(fragment);
     }
 
     private void loadFragment(Fragment fragment) {
@@ -157,6 +164,9 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         }
 
         if (null == item)
+            return;
+
+        if (TextUtils.isEmpty(mBinding.edtTransactionAmount.getText().toString().trim()))
             return;
 
         Intent intent = new Intent();
