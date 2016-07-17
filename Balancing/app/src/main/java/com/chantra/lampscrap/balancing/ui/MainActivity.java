@@ -359,14 +359,11 @@ public class MainActivity extends AppCompatActivity {
 
         transactionsViewModel.clear();
         for (TransactionInRealm tIn : inRealms) {
-            //tIncome += 1;
-            tIncome += tIn.getUnitPrice();
-            //tIncome += tIn.getValue();
+            tIncome += tIn.getValue();
             transactionsViewModel.add(new TransactionInViewModel(tIn));
         }
 
         for (TransactionOutRealm tOut : outRealms) {
-            //tExpense += tOut.getValue();
             tExpense += tOut.getValue();
             transactionsViewModel.add(new TransactionOutViewModel(tOut));
         }
