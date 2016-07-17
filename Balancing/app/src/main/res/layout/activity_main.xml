@@ -25,11 +25,12 @@
             android:id="@+id/drawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:elevation="4dp"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:openDrawer="end">
 
-            <FrameLayout
+            <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -37,7 +38,34 @@
                     android:id="@+id/content_dashboard"
                     layout="@layout/content_dashboard" />
 
-            </FrameLayout>
+                <LinearLayout
+                    android:id="@+id/bottom_sheet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_behavior="@string/bottom_sheet_behavior">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="All Transaction"
+                        android:textColor="@color/white" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:background="#fff"
+                        android:orientation="vertical"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                </LinearLayout>
+
+            </android.support.design.widget.CoordinatorLayout>
 
             <android.support.design.widget.NavigationView
                 android:id="@+id/nav_left"
@@ -165,34 +193,6 @@
             </android.support.design.widget.NavigationView>
 
         </android.support.v4.widget.DrawerLayout>
-
-        <LinearLayout
-            android:id="@+id/bottom_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_behavior="@string/bottom_sheet_behavior">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="All Transaction"
-                android:textColor="@color/white" />
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:background="#fff"
-                android:orientation="vertical"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
-        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
