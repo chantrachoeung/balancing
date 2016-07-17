@@ -75,11 +75,11 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void execute(Realm realm) {
                 String accessToken = UUID.randomUUID().toString();
-                userRealm = realm.where(UserRealm.class).equalTo("name", username, Case.SENSITIVE).equalTo("password", password, Case.SENSITIVE).findFirst();
+                userRealm = realm.where(UserRealm.class).beginGroup().equalTo("name", username, Case.SENSITIVE).equalTo("password", password, Case.SENSITIVE).endGroup().findFirst();
                 if (null != userRealm) {
                     userRealm.setSignInDate(DateUtils.getCurrentDate());
                     userRealm.setAccessToken(accessToken);
-                    SessionManager.init(getApplicationContext()).setAccessToken(accessToken);
+                    SessionManager.init(SignInActivity.this).setAccessToken(accessToken);
                 } else {
                     throw new RuntimeException("Do you already have an account?");
                 }
@@ -90,8 +90,8 @@ public class SignInActivity extends AppCompatActivity {
                 if (null != progressDialog)
                     progressDialog.dismiss();
 
-                SessionManager.init(getApplicationContext()).setIsLogin(true);
-                startActivity(new Intent(getApplicationContext(), WelcomeActivity.class));
+                SessionManager.init(SignInActivity.this).setIsLogin(true);
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
                 finish();
             }
         }, new Realm.Transaction.OnError() {

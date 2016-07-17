@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -20,9 +19,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.chantra.lampscrap.api.adapter.BindingRecyclerAdapter;
+import com.chantra.lampscrap.api.binder.CompositeItemBinder;
+import com.chantra.lampscrap.api.binder.ItemBinder;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
 import com.chantra.lampscrap.balancing.BR;
 import com.chantra.lampscrap.balancing.R;
+import com.chantra.lampscrap.balancing.binder.TranInBinder;
+import com.chantra.lampscrap.balancing.binder.TranOutBinder;
 import com.chantra.lampscrap.balancing.databinding.ActivityMainBinding;
 import com.chantra.lampscrap.balancing.mapping.TType;
 import com.chantra.lampscrap.balancing.respository.RealmHelper;
@@ -35,6 +38,10 @@ import com.chantra.lampscrap.balancing.respository.objects.UserRealm;
 import com.chantra.lampscrap.balancing.utils.DateUtils;
 import com.chantra.lampscrap.balancing.utils.SessionManager;
 import com.chantra.lampscrap.balancing.viewmodel.SettingViewModel;
+import com.chantra.lampscrap.balancing.viewmodel.TransactionInViewModel;
+import com.chantra.lampscrap.balancing.viewmodel.TransactionOutViewModel;
+import com.chantra.lampscrap.balancing.viewmodel.TransactionViewModel;
+import com.chantra.lampscrap.balancing.viewmodel.TransactionsViewModel;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -54,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
 
     private BottomSheetBehavior behavior;
+    private TransactionsViewModel transactionsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +78,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        behavior = BottomSheetBehavior.from(mBinding.bottomSheet);
-        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                // React to state change
-            }
+        transactionsViewModel = new TransactionsViewModel();
+        mBinding.setTrans(transactionsViewModel);
+        mBinding.setView(this);
 
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                // React to dragging events
-            }
-        });
+        behavior = BottomSheetBehavior.from(mBinding.bottomSheet);
+//        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//                // React to state change
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//                // React to dragging events
+//            }
+//        });
 
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mBinding.toolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.addDrawerListener(mToggle);
@@ -134,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
                     userRealm.setAccessToken("");
                 else {
                     SessionManager.init(getApplicationContext()).reset();
-                    goLogin();
                 }
             }
         }, new Realm.Transaction.OnSuccess() {
@@ -224,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     @Override
@@ -305,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
             transaction.setId(id.getAndIncrement());
             transaction.setCurrentcy(new CurrentcyRealm());
             transaction.setTransactionType(ttype);
-            transaction.setUnitPrice(price);
+            transaction.setValue(price);
             transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
             RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
@@ -347,19 +357,37 @@ public class MainActivity extends AppCompatActivity {
         double tExpense = 0;
         double tIncome = 0;
 
+        transactionsViewModel.clear();
         for (TransactionInRealm tIn : inRealms) {
             //tIncome += 1;
             tIncome += tIn.getUnitPrice();
             //tIncome += tIn.getValue();
+            transactionsViewModel.add(new TransactionInViewModel(tIn));
         }
 
         for (TransactionOutRealm tOut : outRealms) {
             //tExpense += tOut.getValue();
             tExpense += tOut.getValue();
+            transactionsViewModel.add(new TransactionOutViewModel(tOut));
         }
 
         mBinding.contentDashboard.currentExpanse.setText(currentFormat(tExpense));
         mBinding.contentDashboard.currentBalance.setText(currentFormat(tIncome));
     }
 
+    public ItemBinder<TransactionViewModel> itemViewBinder() {
+        return new CompositeItemBinder<>(
+                new TranInBinder(BR.in, R.layout.item_transaction_in),
+                new TranOutBinder(BR.out, R.layout.item_transaction_out)
+        );
+    }
+
+    public ClickHandler<TransactionViewModel> clickHandler() {
+        return new ClickHandler<TransactionViewModel>() {
+            @Override
+            public void onClick(TransactionViewModel item) {
+
+            }
+        };
+    }
 }

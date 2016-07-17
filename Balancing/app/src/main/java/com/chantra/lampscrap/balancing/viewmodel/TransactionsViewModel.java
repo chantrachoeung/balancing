@@ -1,6 +1,7 @@
 package com.chantra.lampscrap.balancing.viewmodel;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 
@@ -8,6 +9,7 @@ import android.databinding.ObservableList;
  * Created by phearom on 7/17/16.
  */
 public class TransactionsViewModel extends BaseObservable {
+    @Bindable
     public ObservableList<TransactionViewModel> items;
 
     public TransactionsViewModel() {

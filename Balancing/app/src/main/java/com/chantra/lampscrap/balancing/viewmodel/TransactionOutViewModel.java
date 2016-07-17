@@ -5,30 +5,25 @@ import com.chantra.lampscrap.balancing.respository.objects.TransactionOutRealm;
 /**
  * Created by phearom on 7/17/16.
  */
-public class TransactionOutViewModel extends TransactionViewModel {
-    private TransactionOutRealm model;
+public class TransactionOutViewModel extends TransactionViewModel<TransactionOutRealm> {
 
     public TransactionOutViewModel(TransactionOutRealm transactionOutRealm) {
-        this.model = transactionOutRealm;
-    }
-
-    public TransactionOutRealm getModel() {
-        return model;
+        super(transactionOutRealm);
     }
 
     public String getDateCreated() {
-        return this.model.getDateCreated();
+        return getModel().getDateCreated();
     }
 
     public int getUnitPrice() {
-        return this.model.getUnitPrice();
+        return getModel().getUnitPrice();
     }
 
-    public int getValue() {
-        return this.getValue();
+    public double getValue() {
+        return getModel().getValue();
     }
 
-    public int getDescription() {
-        return this.getDescription();
+    public String getDescription() {
+        return getModel().getDescritpion();
     }
 }
