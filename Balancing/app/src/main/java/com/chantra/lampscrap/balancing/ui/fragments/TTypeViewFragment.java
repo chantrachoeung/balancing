@@ -78,7 +78,7 @@ public class TTypeViewFragment extends Fragment {
             typeId = 0;
         }
         RealmResults<TransactionTypeRealm> typeRealms = RealmHelper.init(getContext()).doQuery(TransactionTypeRealm.class).findAll();
-        //RealmResults<TransactionTypeRealm> typeRealms = realm.where(TransactionTypeRealm.class).equalTo("type", typeId).findAll();
+        typeRealms.where().equalTo("type", 0).findAll();
         for (TransactionTypeRealm type : typeRealms) {
             tTypesViewModel.add(new TTypeViewModel(type));
         }

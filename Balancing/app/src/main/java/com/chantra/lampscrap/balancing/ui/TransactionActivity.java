@@ -33,10 +33,11 @@ import java.util.Date;
 public class TransactionActivity extends AppCompatActivity implements OnTypeFragmentListener<TTypeViewModel> {
     private ActivityTransactionBinding mBinding;
 
-    public static void launch(Activity activity, int requestCode, boolean expense, int typeId) {
+    public static void launch(Activity activity, int requestCode, boolean expense, int typeId, String typeName) {
         Intent intent = new Intent(activity, TransactionActivity.class);
         intent.putExtra(K.IS_EXPENSE, expense);
         intent.putExtra(K.TYPE_ID, typeId);
+        intent.putExtra(K.TYPE_NAME, typeName);
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -49,7 +50,12 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setDateView(getCurrentDate(Calendar.getInstance().getTime()));
-        loadType();
+        if(typeId() > -1){
+            loadSpecific();
+        }else{
+            loadType();
+        }
+
 
         mBinding.tvDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +71,10 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         });
     }
 
+    private void loadSpecific() {
+
+    }
+
     private void setDateView(String date) {
         mBinding.tvDateTime.setText(date);
     }
@@ -77,9 +87,18 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         }
     }
 
+    private int typeId() {
+        try {
+            return getIntent().getIntExtra(K.TYPE_ID, -1);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
     private void loadType() {
         TTypeViewFragment fragment = new TTypeViewFragment();
         fragment.setTType(isExpense() ? K.TType.EXPENSE : K.TType.INCOME);
+
         loadFragment(fragment);
     }
 

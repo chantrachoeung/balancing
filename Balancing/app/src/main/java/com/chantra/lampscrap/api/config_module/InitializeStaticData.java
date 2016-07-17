@@ -97,6 +97,27 @@ public class InitializeStaticData {
         transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(9);
+        transactionTypeRealm.setIcon(R.drawable.ic_work_salary);
+        transactionTypeRealm.setName("Salary");
+        transactionTypeRealm.setType(1);
+        list.add(transactionTypeRealm);
+
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(10);
+        transactionTypeRealm.setIcon(R.drawable.ic_attach_money);
+        transactionTypeRealm.setName("Sell Property");
+        transactionTypeRealm.setType(1);
+        list.add(transactionTypeRealm);
+
+        transactionTypeRealm = new TransactionTypeRealm();
+        transactionTypeRealm.setId(11);
+        transactionTypeRealm.setIcon(R.drawable.ic_redeem_black_24dp);
+        transactionTypeRealm.setName("Other");
+        transactionTypeRealm.setType(1);
+        list.add(transactionTypeRealm);
+
         RealmHelper.init(context).addObject(list);
     }
 }

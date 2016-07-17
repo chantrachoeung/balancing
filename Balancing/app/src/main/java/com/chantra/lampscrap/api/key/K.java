@@ -6,6 +6,7 @@ package com.chantra.lampscrap.api.key;
 public interface K {
     String IS_EXPENSE = "is_expense";
     String TYPE_ID = "type_id";
+    String TYPE_NAME = "type_name";
 
     enum TType{
         INCOME,EXPENSE

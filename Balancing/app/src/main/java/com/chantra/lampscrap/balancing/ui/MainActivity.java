@@ -171,23 +171,23 @@ public class MainActivity extends AppCompatActivity {
         mBinding.contentDashboard.addIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_INCOME, false, 0);
+                launchTransactionActivity(REQUEST_ADD_INCOME, false, 0, "");
             }
         });
 
         mBinding.contentDashboard.addExpend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 0);
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 0, "");
             }
         });
 
-       /* mBinding.contentDashboard.cellPhone.setOnClickListener(new View.OnClickListener() {
+       mBinding.contentDashboard.cellPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 5);
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 5, "Cell Phone");
             }
-        });*/
+        });
     }
 
     @Override
@@ -221,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
         }, 1000);
     }
 
-    private void launchTransactionActivity(int requestCode, boolean expense, int typeId) {
-        TransactionActivity.launch(this, requestCode, expense, typeId);
+    private void launchTransactionActivity(int requestCode, boolean expense, int typeId, String typeName) {
+        TransactionActivity.launch(this, requestCode, expense, typeId, typeName);
     }
 
     private void initSetting() {

@@ -102,7 +102,6 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_cell_phone"
                 android:theme="@style/dashboardIconButton"/>
-
             <ImageView
                 android:id="@+id/transportation"
                 android:layout_width="80dp"
@@ -124,7 +123,6 @@
                 android:src="@drawable/ic_accormodation"
                 android:theme="@style/dashboardIconButton" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,30 +130,30 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:weightSum="1">
-
             <Button
                 android:id="@+id/add_income"
-                android:layout_width="wrap_content"
-                android:layout_height="95dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="0.23"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_circle_income"
+                android:layout_marginRight="20dp"
                 android:foreground="?selectableItemBackground"
-                android:text="Insert Income"
+                android:textSize="50dp"
+                android:text="+"
+                android:textColor="#009900"
                 android:theme="@style/ButtonPrimary" />
-
             <Button
                 android:id="@+id/add_expend"
-                android:layout_width="wrap_content"
-                android:layout_height="95dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="0.23"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="20dp"
+
+                android:background="@drawable/bg_circle_expend"
                 android:foreground="?selectableItemBackground"
-                android:text="Insert Expence"
+                android:text="-"
+                android:textColor="#ff0000"
+                android:textSize="50dp"
                 android:theme="@style/ButtonAccent" />
-
-
         </LinearLayout>
-
         <TextView
             android:id="@+id/added_income"
             android:layout_width="wrap_content"
