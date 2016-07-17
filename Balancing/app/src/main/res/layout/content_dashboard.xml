@@ -130,28 +130,29 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:weightSum="1">
-            <Button
+            <ImageButton
                 android:id="@+id/add_income"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@drawable/bg_circle_income"
                 android:layout_marginRight="20dp"
                 android:foreground="?selectableItemBackground"
-                android:textSize="50dp"
-                android:text="+"
-                android:textColor="#009900"
+                android:src="@drawable/ic_add"
+                android:scaleType="centerCrop"
+                android:padding="25dp"
+
                 android:theme="@style/ButtonPrimary" />
-            <Button
+            <ImageButton
                 android:id="@+id/add_expend"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="20dp"
+                android:scaleType="centerCrop"
+                android:padding="25dp"
 
                 android:background="@drawable/bg_circle_expend"
                 android:foreground="?selectableItemBackground"
-                android:text="-"
-                android:textColor="#ff0000"
-                android:textSize="50dp"
+                android:src="@drawable/ic_remove"
                 android:theme="@style/ButtonAccent" />
         </LinearLayout>
         <TextView
