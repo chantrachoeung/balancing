@@ -74,6 +74,7 @@
                         android:orientation="vertical"
                         app:clickHandler="@{view.clickHandler}"
                         app:itemViewBinder="@{view.itemViewBinder}"
+                        app:hasDividerVertical="@{true}"
                         app:items="@{trans.items}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
