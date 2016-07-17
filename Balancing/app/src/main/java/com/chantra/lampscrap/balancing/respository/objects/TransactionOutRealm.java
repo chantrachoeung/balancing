@@ -18,6 +18,15 @@ public class TransactionOutRealm extends RealmObject {
     private double quantity;
     private double totalAmount;
     private CurrentcyRealm currentcy;
+    private String descritpion;
+
+    public String getDescritpion() {
+        return descritpion;
+    }
+
+    public void setDescritpion(String descritpion) {
+        this.descritpion = descritpion;
+    }
 
     public double getQuantity() {
         return quantity;

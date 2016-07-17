@@ -20,6 +20,16 @@ public class TransactionInRealm extends RealmObject {
     private CurrentcyRealm currentcy;
     private TransactionTypeRealm transactionCategory;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    private String description;
+
     public int getId() {
         return id;
     }
