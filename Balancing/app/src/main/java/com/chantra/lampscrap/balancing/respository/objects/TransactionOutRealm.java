@@ -18,6 +18,31 @@ public class TransactionOutRealm extends RealmObject {
     private double quantity;
     private double totalAmount;
     private CurrentcyRealm currentcy;
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public CurrentcyRealm getCurrentcy() {
+        return currentcy;
+    }
+
+    public void setCurrentcy(CurrentcyRealm currentcy) {
+        this.currentcy = currentcy;
+    }
+
     private TransactionTypeRealm transactionCategory;
 
     public int getId() {
@@ -58,5 +83,13 @@ public class TransactionOutRealm extends RealmObject {
 
     public void setTransactionCategory(TransactionTypeRealm transactionCategory) {
         this.transactionCategory = transactionCategory;
+    }
+
+    public int getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(int unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }
