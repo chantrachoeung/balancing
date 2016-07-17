@@ -28,7 +28,7 @@
             app:items="@{ttypes.items}"
             app:itemSpace="@{8}"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
-            app:spanCount="3" />
+            app:spanCount="2" />
 
         <android.support.v7.widget.AppCompatButton
             android:theme="@style/ButtonDefault"
