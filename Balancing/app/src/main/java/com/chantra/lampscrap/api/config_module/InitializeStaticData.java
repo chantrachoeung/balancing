@@ -57,62 +57,55 @@ public class InitializeStaticData {
 
         transactionTypeRealm = new TransactionTypeRealm();
         transactionTypeRealm.setId(3);
-        transactionTypeRealm.setIcon(R.drawable.ic_food_drink);
-        transactionTypeRealm.setName("Drink");
-        transactionTypeRealm.setType(0);
-        list.add(transactionTypeRealm);
-
-        transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(4);
         transactionTypeRealm.setIcon(R.drawable.ic_health);
         transactionTypeRealm.setName("Health Care");
         transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(5);
+        transactionTypeRealm.setId(4);
         transactionTypeRealm.setIcon(R.drawable.ic_cell_phone);
         transactionTypeRealm.setName("Mobile");
         transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(6);
+        transactionTypeRealm.setId(5);
         transactionTypeRealm.setIcon(R.drawable.ic_transportation);
         transactionTypeRealm.setName("Transportation");
         transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(7);
+        transactionTypeRealm.setId(6);
         transactionTypeRealm.setIcon(R.drawable.ic_shopping_cart);
         transactionTypeRealm.setName("Other");
         transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(8);
+        transactionTypeRealm.setId(7);
         transactionTypeRealm.setIcon(R.drawable.ic_sport);
         transactionTypeRealm.setName("Sport & Gym");
         transactionTypeRealm.setType(0);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(9);
+        transactionTypeRealm.setId(8);
         transactionTypeRealm.setIcon(R.drawable.ic_work_salary);
         transactionTypeRealm.setName("Salary");
         transactionTypeRealm.setType(1);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(10);
+        transactionTypeRealm.setId(9);
         transactionTypeRealm.setIcon(R.drawable.ic_attach_money);
         transactionTypeRealm.setName("Sell Property");
         transactionTypeRealm.setType(1);
         list.add(transactionTypeRealm);
 
         transactionTypeRealm = new TransactionTypeRealm();
-        transactionTypeRealm.setId(11);
+        transactionTypeRealm.setId(10);
         transactionTypeRealm.setIcon(R.drawable.ic_redeem_black_24dp);
         transactionTypeRealm.setName("Other");
         transactionTypeRealm.setType(1);

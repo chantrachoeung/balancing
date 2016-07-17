@@ -29,15 +29,17 @@
                 android:theme="@style/dashboardIconButton" />
 
             <ImageView
+                android:id="@+id/health_care"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_health"
                 android:theme="@style/dashboardIconButton" />
 
             <ImageView
+                android:id="@+id/cloth_apeareance"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_transportation"
+                android:src="@drawable/ic_shopping_cart"
                 android:theme="@style/dashboardIconButton" />
         </LinearLayout>
 

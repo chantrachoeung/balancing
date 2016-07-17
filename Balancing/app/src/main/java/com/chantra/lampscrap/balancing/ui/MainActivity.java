@@ -180,12 +180,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       mBinding.contentDashboard.cellPhone.setOnClickListener(new View.OnClickListener() {
+        mBinding.contentDashboard.accomodation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 5, "Cell Phone");
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 1, "Accommodation");
             }
         });
+        mBinding.contentDashboard.food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 2, "Food & Beverage");
+            }
+        });
+        mBinding.contentDashboard.healthCare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 3, "Health Care");
+            }
+        });
+        mBinding.contentDashboard.cellPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 4, "Cell Phone");
+            }
+        });
+        mBinding.contentDashboard.transportation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 5, "Transportation");
+            }
+        });
+        mBinding.contentDashboard.other.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 6, "Ohter");
+            }
+        });
+        mBinding.contentDashboard.sport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 7, "Sport & Gym");
+            }
+        });
+
+
+
     }
 
     @Override

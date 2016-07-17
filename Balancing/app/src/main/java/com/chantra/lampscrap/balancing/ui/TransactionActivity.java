@@ -50,9 +50,13 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setDateView(getCurrentDate(Calendar.getInstance().getTime()));
+
+        View specifictBox = findViewById(R.id.specifict_type_layout);
         if(typeId() > -1){
+            specifictBox.setVisibility(View.VISIBLE);
             loadSpecific();
         }else{
+            specifictBox.setVisibility(View.GONE);
             loadType();
         }
 
@@ -72,7 +76,7 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
     }
 
     private void loadSpecific() {
-        mBinding.buttonSpecifictType.setText(typeName());
+        mBinding.buttonSpecifictType.setText("Add to " + typeName());
     }
 
     private void setDateView(String date) {
