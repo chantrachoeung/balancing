@@ -5,6 +5,10 @@
 
         <import type="android.view.View" />
 
+        <import type="com.chantra.lampscrap.api.utils.CurrencyUtils" />
+
+        <import type="com.chantra.lampscrap.balancing.utils.DateUtils" />
+
         <variable
             name="in"
             type="com.chantra.lampscrap.balancing.viewmodel.TransactionInViewModel" />
@@ -28,7 +32,7 @@
                 android:layout_weight="1"
                 android:hint="Date"
                 android:singleLine="true"
-                android:text="@{in.dateCreated}" />
+                android:text='@{DateUtils.formatDate(in.dateCreated,"yyyy-MM-dd")}' />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -36,7 +40,8 @@
                 android:layout_weight="1"
                 android:hint="Value"
                 android:singleLine="true"
-                android:text="@{String.valueOf(in.value)}" />
+                android:text="@{CurrencyUtils.currentFormat(in.value)}"
+                android:textColor="@color/colorPrimary" />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:layout_width="wrap_content"

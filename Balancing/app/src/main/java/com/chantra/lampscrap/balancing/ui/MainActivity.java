@@ -22,6 +22,7 @@ import com.chantra.lampscrap.api.adapter.BindingRecyclerAdapter;
 import com.chantra.lampscrap.api.binder.CompositeItemBinder;
 import com.chantra.lampscrap.api.binder.ItemBinder;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
+import com.chantra.lampscrap.api.utils.CurrencyUtils;
 import com.chantra.lampscrap.balancing.BR;
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.binder.TranInBinder;
@@ -345,31 +346,30 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private String currentFormat(double price) {
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
-        return numberFormat.format(price);
-    }
-
     private void updateBalance() {
-        RealmResults<TransactionInRealm> inRealms = RealmHelper.init(this).doQuery(TransactionInRealm.class).findAll();
-        RealmResults<TransactionOutRealm> outRealms = RealmHelper.init(this).doQuery(TransactionOutRealm.class).findAll();
+        try {
+            RealmResults<TransactionInRealm> inRealms = RealmHelper.init(this).doQuery(TransactionInRealm.class).findAll();
+            RealmResults<TransactionOutRealm> outRealms = RealmHelper.init(this).doQuery(TransactionOutRealm.class).findAll();
 
-        double tExpense = 0;
-        double tIncome = 0;
+            double tExpense = 0;
+            double tIncome = 0;
 
-        transactionsViewModel.clear();
-        for (TransactionInRealm tIn : inRealms) {
-            tIncome += tIn.getValue();
-            transactionsViewModel.add(new TransactionInViewModel(tIn));
+            transactionsViewModel.clear();
+            for (TransactionInRealm tIn : inRealms) {
+                tIncome += tIn.getValue();
+                transactionsViewModel.add(new TransactionInViewModel(tIn));
+            }
+
+            for (TransactionOutRealm tOut : outRealms) {
+                tExpense += tOut.getValue();
+                transactionsViewModel.add(new TransactionOutViewModel(tOut));
+            }
+
+            mBinding.contentDashboard.currentExpanse.setText(CurrencyUtils.currentFormat(tExpense));
+            mBinding.contentDashboard.currentBalance.setText(CurrencyUtils.currentFormat(tIncome));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        for (TransactionOutRealm tOut : outRealms) {
-            tExpense += tOut.getValue();
-            transactionsViewModel.add(new TransactionOutViewModel(tOut));
-        }
-
-        mBinding.contentDashboard.currentExpanse.setText(currentFormat(tExpense));
-        mBinding.contentDashboard.currentBalance.setText(currentFormat(tIncome));
     }
 
     public ItemBinder<TransactionViewModel> itemViewBinder() {

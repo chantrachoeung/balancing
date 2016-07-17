@@ -9,6 +9,7 @@ public class TransactionOutViewModel extends TransactionViewModel<TransactionOut
 
     public TransactionOutViewModel(TransactionOutRealm transactionOutRealm) {
         super(transactionOutRealm);
+        setTransactionType("T Out");
     }
 
     public String getDateCreated() {
