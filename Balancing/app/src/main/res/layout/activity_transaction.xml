@@ -97,12 +97,33 @@
                     android:singleLine="true"
                     android:textColorHint="@color/colorPrimary" />
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textAlignment="center"
+                    android:layout_gravity="left|top">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add to"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:id="@+id/button_specifict_type" />
+                </LinearLayout>
+
                 <FrameLayout
                     android:id="@+id/ttype_container"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_margin="20dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1" >
+
+
+                </FrameLayout>
 
             </android.support.v7.widget.LinearLayoutCompat>
 

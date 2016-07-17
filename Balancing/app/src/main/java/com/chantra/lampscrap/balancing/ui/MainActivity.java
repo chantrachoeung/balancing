@@ -169,14 +169,14 @@ public class MainActivity extends AppCompatActivity {
         mBinding.contentDashboard.addIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_INCOME, false, 0, "");
+                launchTransactionActivity(REQUEST_ADD_INCOME, false, -1, "");
             }
         });
 
         mBinding.contentDashboard.addExpend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, 0, "");
+                launchTransactionActivity(REQUEST_ADD_EXPENSE, true, -1, "");
             }
         });
 

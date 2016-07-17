@@ -72,7 +72,7 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
     }
 
     private void loadSpecific() {
-
+        mBinding.buttonSpecifictType.setText(typeName());
     }
 
     private void setDateView(String date) {
@@ -92,6 +92,14 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
             return getIntent().getIntExtra(K.TYPE_ID, -1);
         } catch (Exception e) {
             return -1;
+        }
+    }
+
+    private String typeName() {
+        try {
+            return getIntent().getStringExtra(K.TYPE_NAME);
+        } catch (Exception e) {
+            return "";
         }
     }
 
