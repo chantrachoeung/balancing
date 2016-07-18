@@ -202,7 +202,9 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
 
         Intent intent = new Intent();
         Bundle bundle = tType.toData();
+        bundle.putString("date", String.valueOf(mBinding.tvDateTime.getText()));
         bundle.putInt("price", Integer.valueOf(mBinding.edtTransactionAmount.getText().toString()));
+        bundle.putString("description", String.valueOf(mBinding.tranNote.getText()));
         intent.putExtras(bundle);
         setResult(RESULT_OK, intent);
         finish();

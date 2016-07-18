@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:hint="Value"
                 android:singleLine="true"
-                android:text="@{CurrencyUtils.currentFormat(in.value)}"
+                android:text="@{CurrencyUtils.currentFormat(in.totalAmount)}"
                 android:textColor="@color/colorPrimary" />
 
             <android.support.v7.widget.AppCompatImageButton
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Transaction Type"
-                    android:text="@{in.transactionType}" />
+                    android:text="@{in.type}" />
             </android.support.v7.widget.LinearLayoutCompat>
 
             <android.support.v7.widget.LinearLayoutCompat

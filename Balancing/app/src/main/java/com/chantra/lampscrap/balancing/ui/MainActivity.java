@@ -247,14 +247,16 @@ public class MainActivity extends AppCompatActivity {
             TransactionTypeRealm typeRealm = tType.get(data.getExtras());
             int price = data.getExtras().getInt("price");
             int tTypeId = data.getExtras().getInt("tType");
+            \
+            String description = data.getExtras().getString("description");
             switch (requestCode) {
                 case REQUEST_ADD_EXPENSE:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-                    doTransaction(typeRealm, price, true, tTypeId);
+                    doTransaction(typeRealm, price, true, tTypeId, description);
                     break;
                 case REQUEST_ADD_INCOME:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-                    doTransaction(typeRealm, price, false, tTypeId);
+                    doTransaction(typeRealm, price, false, tTypeId, description);
                     break;
             }
         } else {
@@ -310,23 +312,26 @@ public class MainActivity extends AppCompatActivity {
 
     private static AtomicInteger id = new AtomicInteger();
 
-    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype) {
+    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note) {
         if (!expense) {
             TransactionInRealm transaction = new TransactionInRealm();
             transaction.setId(id.getAndIncrement());
             transaction.setCurrentcy(new CurrentcyRealm());
             transaction.setTransactionType(ttype);
-            transaction.setValue(price);
+            transaction.setTotalAmount(price);
+
             transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
+            transaction.setDescription(note);
             RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
         } else {
             TransactionOutRealm transaction = new TransactionOutRealm();
 
             transaction.setId(id.getAndIncrement());
-            transaction.setValue(price);
+            transaction.setTotalAmount(price);
             transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
+            transaction.setDescritpion(note);
             transaction.setTransactionType(ttype);
             RealmHelper.init(this).addObject(transaction, transactionOutRealmChangeListener);
         }
@@ -356,12 +361,12 @@ public class MainActivity extends AppCompatActivity {
 
             transactionsViewModel.clear();
             for (TransactionInRealm tIn : inRealms) {
-                tIncome += tIn.getValue();
+                tIncome += tIn.getTotalAmount();
                 transactionsViewModel.add(new TransactionInViewModel(tIn));
             }
 
             for (TransactionOutRealm tOut : outRealms) {
-                tExpense += tOut.getValue();
+                tExpense += tOut.getTotalAmount();
                 transactionsViewModel.add(new TransactionOutViewModel(tOut));
             }
 

@@ -9,7 +9,7 @@ public class TransactionOutViewModel extends TransactionViewModel<TransactionOut
 
     public TransactionOutViewModel(TransactionOutRealm transactionOutRealm) {
         super(transactionOutRealm);
-        setTransactionType("T Out");
+        //setTransactionType("T Out");
     }
 
     public String getDateCreated() {
@@ -19,6 +19,10 @@ public class TransactionOutViewModel extends TransactionViewModel<TransactionOut
     public int getUnitPrice() {
         return getModel().getUnitPrice();
     }
+
+    public double getTotalPrice(){return getModel().getTotalAmount();}
+
+    public String getType(){return getModel().getTransactionCategory().getName();}
 
     public double getValue() {
         return getModel().getValue();

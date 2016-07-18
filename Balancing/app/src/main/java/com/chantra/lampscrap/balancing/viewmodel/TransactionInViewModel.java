@@ -9,16 +9,20 @@ public class TransactionInViewModel extends TransactionViewModel<TransactionInRe
 
     public TransactionInViewModel(TransactionInRealm item) {
         super(item);
-        setTransactionType("T In");
+        //setTransactionType("T In");
     }
 
     public String getDateCreated() {
         return getModel().getDateCreated();
     }
 
+    public double getTotalAmount(){return getModel().getTotalAmount();}
+
     public double getValue() {
         return getModel().getValue();
     }
+
+    public String getType() {return getModel().getTransactionCategory().getName();}
 
     public String getDescription() {
         return getModel().getDescription();
