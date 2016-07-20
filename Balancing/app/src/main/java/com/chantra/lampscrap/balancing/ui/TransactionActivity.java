@@ -21,6 +21,9 @@ import com.chantra.lampscrap.api.key.K;
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityTransactionBinding;
 import com.chantra.lampscrap.balancing.mapping.TType;
+import com.chantra.lampscrap.balancing.respository.RealmHelper;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionInRealm;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
 import com.chantra.lampscrap.balancing.ui.fragments.OnTypeFragmentListener;
 import com.chantra.lampscrap.balancing.ui.fragments.TTypeAddFragment;
 import com.chantra.lampscrap.balancing.ui.fragments.TTypeViewFragment;
@@ -29,6 +32,13 @@ import com.chantra.lampscrap.balancing.viewmodel.TTypeViewModel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import io.realm.Case;
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+
+
 
 public class TransactionActivity extends AppCompatActivity implements OnTypeFragmentListener<TTypeViewModel> {
     private ActivityTransactionBinding mBinding;
@@ -73,7 +83,21 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
             public void onClick(View v) {
             }
         });
+
+        mBinding.buttonSpecifictType.setOnClickListener(new View.OnClickListener(){
+          @Override
+            public void onClick(View v){
+              Intent intent = new Intent();
+              int type = intent.getExtras().getInt("type");
+              //TTypeViewModel tTypeModel = new TTypeViewModel();
+              //TTypeViewModel ttypeRealm = RealmHelper.init(getContext()).doQuery(TTypeViewModel.class).equalTo("id", type).findFirst();
+              specifictExpanse(200,type );
+          }
+        });
+
     }
+
+
 
     private void loadSpecific() {
         mBinding.buttonSpecifictType.setText("Add to " + typeName());
@@ -175,6 +199,8 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         return currentDate;
     }
 
+
+
     @Override
     public void onAction(int action, TTypeViewModel item) {
         TType tType = new TType();
@@ -199,6 +225,25 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
 
         if (TextUtils.isEmpty(mBinding.edtTransactionAmount.getText().toString().trim()))
             return;
+
+        Intent intent = new Intent();
+        Bundle bundle = tType.toData();
+        bundle.putString("date", String.valueOf(mBinding.tvDateTime.getText()));
+        bundle.putInt("price", Integer.valueOf(mBinding.edtTransactionAmount.getText().toString()));
+        bundle.putString("description", String.valueOf(mBinding.tranNote.getText()));
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void specifictExpanse(int action, int item_id) {
+        RealmResults<TransactionTypeRealm> typeRealms = RealmHelper.init(this).doQuery(TransactionTypeRealm.class).equalTo("id", item_id).findAll();
+
+        TType tType = new TType();
+
+        for (TransactionTypeRealm tTypeObj : typeRealms) {
+            tType.put(tTypeObj);
+        }
 
         Intent intent = new Intent();
         Bundle bundle = tType.toData();

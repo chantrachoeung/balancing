@@ -247,7 +247,6 @@ public class MainActivity extends AppCompatActivity {
             TransactionTypeRealm typeRealm = tType.get(data.getExtras());
             int price = data.getExtras().getInt("price");
             int tTypeId = data.getExtras().getInt("tType");
-            \
             String description = data.getExtras().getString("description");
             switch (requestCode) {
                 case REQUEST_ADD_EXPENSE:
