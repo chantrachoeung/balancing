@@ -32,6 +32,7 @@ public class RealmHelper {
         if (null == mConfig)
             mConfig = new RealmConfiguration.Builder(mContext)
                     .name("balancing.realm")
+                    .deleteRealmIfMigrationNeeded()
                     .schemaVersion(2)
                     .migration(new Migration())
                     .build();

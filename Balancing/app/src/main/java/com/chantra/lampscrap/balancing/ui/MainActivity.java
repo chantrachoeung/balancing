@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.chantra.lampscrap.api.adapter.BindingRecyclerAdapter;
 import com.chantra.lampscrap.api.binder.CompositeItemBinder;
 import com.chantra.lampscrap.api.binder.ItemBinder;
+import com.chantra.lampscrap.api.config_module.InitializeStaticData;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
 import com.chantra.lampscrap.api.utils.CurrencyUtils;
 import com.chantra.lampscrap.balancing.BR;
@@ -44,8 +46,6 @@ import com.chantra.lampscrap.balancing.viewmodel.TransactionOutViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TransactionViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TransactionsViewModel;
 
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.realm.Case;
@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!TextUtils.isEmpty(SessionManager.init(this).getAccessToken()))
+            InitializeStaticData.init(this).load();
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(mBinding.toolbar);
@@ -247,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
             TransactionTypeRealm typeRealm = tType.get(data.getExtras());
             int price = data.getExtras().getInt("price");
             int tTypeId = data.getExtras().getInt("tType");
-            \
+
             String description = data.getExtras().getString("description");
             switch (requestCode) {
                 case REQUEST_ADD_EXPENSE:

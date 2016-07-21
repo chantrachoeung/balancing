@@ -21,6 +21,8 @@ import com.chantra.lampscrap.api.key.K;
 import com.chantra.lampscrap.balancing.R;
 import com.chantra.lampscrap.balancing.databinding.ActivityTransactionBinding;
 import com.chantra.lampscrap.balancing.mapping.TType;
+import com.chantra.lampscrap.balancing.respository.RealmHelper;
+import com.chantra.lampscrap.balancing.respository.objects.TransactionTypeRealm;
 import com.chantra.lampscrap.balancing.ui.fragments.OnTypeFragmentListener;
 import com.chantra.lampscrap.balancing.ui.fragments.TTypeAddFragment;
 import com.chantra.lampscrap.balancing.ui.fragments.TTypeViewFragment;
@@ -52,10 +54,10 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         setDateView(getCurrentDate(Calendar.getInstance().getTime()));
 
         View specifictBox = findViewById(R.id.specifict_type_layout);
-        if(typeId() > -1){
+        if (typeId() > -1) {
             specifictBox.setVisibility(View.VISIBLE);
             loadSpecific();
-        }else{
+        } else {
             specifictBox.setVisibility(View.GONE);
             loadType();
         }
@@ -77,6 +79,27 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
 
     private void loadSpecific() {
         mBinding.buttonSpecifictType.setText("Add to " + typeName());
+        mBinding.buttonSpecifictType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TType tType = new TType();
+                if (typeId() < 0)
+                    return;
+                TransactionTypeRealm typeRealm = RealmHelper.init(TransactionActivity.this).doQuery(TransactionTypeRealm.class).equalTo("id", typeId()).findFirst();
+                if (typeRealm == null)
+                    return;
+                tType.put(typeRealm);
+
+                Intent intent = new Intent();
+                Bundle bundle = tType.toData();
+                bundle.putString("date", String.valueOf(mBinding.tvDateTime.getText()));
+                bundle.putInt("price", Integer.valueOf(mBinding.edtTransactionAmount.getText().toString()));
+                bundle.putString("description", String.valueOf(mBinding.tranNote.getText()));
+                intent.putExtras(bundle);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     private void setDateView(String date) {
