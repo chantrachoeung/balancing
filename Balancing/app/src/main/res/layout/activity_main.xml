@@ -59,10 +59,10 @@
 
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="70dp"
                         android:background="@color/colorPrimary"
                         android:gravity="center"
-                        android:padding="8dp"
+                        android:padding="10dp"
                         android:text="All Transaction"
                         android:textColor="@color/white" />
 

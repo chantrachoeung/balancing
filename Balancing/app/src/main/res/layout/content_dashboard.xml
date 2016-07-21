@@ -132,6 +132,14 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:weightSum="1">
+            <!--<Button
+                android:id="@+id/show_income"
+                android:layout_width="50dp"
+                android:background="@drawable/ic_more_vert"
+                android:paddingTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content" />-->
             <ImageButton
                 android:id="@+id/add_income"
                 android:layout_width="100dp"
@@ -156,6 +164,14 @@
                 android:foreground="?selectableItemBackground"
                 android:src="@drawable/ic_remove"
                 android:theme="@style/ButtonAccent" />
+            <!--<Button
+                android:id="@+id/show_expand"
+                android:layout_width="50dp"
+                android:background="@drawable/ic_more_vert"
+                android:paddingTop="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content" />-->
         </LinearLayout>
         <TextView
             android:id="@+id/added_income"
