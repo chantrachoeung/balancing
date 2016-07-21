@@ -29,6 +29,8 @@ import com.chantra.lampscrap.balancing.ui.fragments.TTypeAddFragment;
 import com.chantra.lampscrap.balancing.ui.fragments.TTypeViewFragment;
 import com.chantra.lampscrap.balancing.viewmodel.TTypeViewModel;
 
+import com.chantra.lampscrap.balancing.ui.MainActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -88,10 +90,11 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
           @Override
             public void onClick(View v){
               Intent intent = new Intent();
-              int type = intent.getExtras().getInt("type");
+              //int type = intent.getExtras().getInt("type");
+              //type = 1;
               //TTypeViewModel tTypeModel = new TTypeViewModel();
               //TTypeViewModel ttypeRealm = RealmHelper.init(getContext()).doQuery(TTypeViewModel.class).equalTo("id", type).findFirst();
-              specifictExpanse(200,type );
+              specifictExpanse(200,typeId() );
           }
         });
 
@@ -253,5 +256,6 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         intent.putExtras(bundle);
         setResult(RESULT_OK, intent);
         finish();
+
     }
 }

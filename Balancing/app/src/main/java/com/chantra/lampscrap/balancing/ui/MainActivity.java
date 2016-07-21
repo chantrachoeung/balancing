@@ -248,14 +248,15 @@ public class MainActivity extends AppCompatActivity {
             int price = data.getExtras().getInt("price");
             int tTypeId = data.getExtras().getInt("tType");
             String description = data.getExtras().getString("description");
+            String date = data.getExtras().getString("date");
             switch (requestCode) {
                 case REQUEST_ADD_EXPENSE:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-                    doTransaction(typeRealm, price, true, tTypeId, description);
+                    doTransaction(typeRealm, price, true, tTypeId, description, date);
                     break;
                 case REQUEST_ADD_INCOME:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-                    doTransaction(typeRealm, price, false, tTypeId, description);
+                    doTransaction(typeRealm, price, false, tTypeId, description, date);
                     break;
             }
         } else {
@@ -311,27 +312,27 @@ public class MainActivity extends AppCompatActivity {
 
     private static AtomicInteger id = new AtomicInteger();
 
-    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note) {
+    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note, String date) {
         if (!expense) {
             TransactionInRealm transaction = new TransactionInRealm();
             transaction.setId(id.getAndIncrement());
             transaction.setCurrentcy(new CurrentcyRealm());
             transaction.setTransactionType(ttype);
-            transaction.setTotalAmount(price);
-
-            transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTotalAmount(price)   ;
+            //transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
             transaction.setDescription(note);
+            transaction.setDateCreated(date);
             RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
         } else {
             TransactionOutRealm transaction = new TransactionOutRealm();
-
             transaction.setId(id.getAndIncrement());
             transaction.setTotalAmount(price);
-            transaction.setDateCreated(DateUtils.getCurrentDate());
+            //transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
             transaction.setDescritpion(note);
             transaction.setTransactionType(ttype);
+            transaction.setDateCreated(date);
             RealmHelper.init(this).addObject(transaction, transactionOutRealmChangeListener);
         }
     }
@@ -390,5 +391,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    public void doDirectTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note, String date) {
+        if (!expense) {
+            TransactionInRealm transaction = new TransactionInRealm();
+            transaction.setId(id.getAndIncrement());
+            transaction.setCurrentcy(new CurrentcyRealm());
+            transaction.setTransactionType(ttype);
+            transaction.setTotalAmount(price);
+
+            //transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTransactionCategory(typeRealm);
+            transaction.setDescription(note);
+            transaction.setDateCreated(date);
+            RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
+        } else {
+            TransactionOutRealm transaction = new TransactionOutRealm();
+
+            transaction.setId(id.getAndIncrement());
+            transaction.setTotalAmount(price);
+            //transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTransactionCategory(typeRealm);
+            transaction.setDescritpion(note);
+            transaction.setTransactionType(ttype);
+            transaction.setDateCreated(date);
+            RealmHelper.init(this).addObject(transaction, transactionOutRealmChangeListener);
+        }
     }
 }
