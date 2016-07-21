@@ -24,6 +24,7 @@ import com.chantra.lampscrap.api.binder.CompositeItemBinder;
 import com.chantra.lampscrap.api.binder.ItemBinder;
 import com.chantra.lampscrap.api.config_module.InitializeStaticData;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
+import com.chantra.lampscrap.api.key.K;
 import com.chantra.lampscrap.api.utils.CurrencyUtils;
 import com.chantra.lampscrap.balancing.BR;
 import com.chantra.lampscrap.balancing.R;
@@ -46,6 +47,14 @@ import com.chantra.lampscrap.balancing.viewmodel.TransactionOutViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TransactionViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TransactionsViewModel;
 
+import org.joda.time.Months;
+import org.joda.time.MutableDateTime;
+import org.joda.time.Weeks;
+import org.joda.time.Years;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.realm.Case;
@@ -73,13 +82,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mBinding.toolbar);
 
         mDrawerLayout = mBinding.drawer;
-        mBinding.navGroupLeft.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-        });
 
         transactionsViewModel = new TransactionsViewModel();
         mBinding.setTrans(transactionsViewModel);
@@ -98,6 +100,22 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        mBinding.navGroupLeft.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                if (checkedId == mBinding.navRadio1.getId()) {
+                    filterBy(K.FilterMode.DAY);
+                } else if (checkedId == mBinding.navRadio2.getId()) {
+                    filterBy(K.FilterMode.WEEK);
+                } else if (checkedId == mBinding.navRadio3.getId()) {
+                    filterBy(K.FilterMode.MONTH);
+                } else if (checkedId == mBinding.navRadio4.getId()) {
+                    filterBy(K.FilterMode.YEAR);
+                }
+            }
+        });
+
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mBinding.toolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.addDrawerListener(mToggle);
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -107,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 if (drawerView.getId() == mBinding.navLeft.getId()) {
                     mDrawerLayout.closeDrawer(GravityCompat.END);
                 } else {
@@ -133,6 +152,99 @@ public class MainActivity extends AppCompatActivity {
         });
         initSetting();
         initTransaction();
+    }
+
+    private boolean diff(K.FilterMode mode, MutableDateTime date) {
+        if (mode == K.FilterMode.YEAR) {
+            int num = Years.yearsBetween(date, mCurrentDate).getYears();
+            if (num > 0)
+                return true;
+        } else if (mode == K.FilterMode.MONTH) {
+            int num = Months.monthsBetween(date, mCurrentDate).getMonths();
+            if (num > 0)
+                return true;
+        } else if (mode == K.FilterMode.WEEK) {
+            int num = Weeks.weeksBetween(date, mCurrentDate).getWeeks();
+            if (num > 0)
+                return true;
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private Date getDate(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyy-mm-dd");
+        if (null == date) {
+            return format.parse(format.format(new Date()));
+        }
+        return format.parse(date);
+    }
+
+    private MutableDateTime mCurrentDate;
+
+    private void filterBy(K.FilterMode mode) {
+        RealmResults<TransactionInRealm> inRealms = RealmHelper.init(this).doQuery(TransactionInRealm.class).findAll();
+        RealmResults<TransactionOutRealm> outRealms = RealmHelper.init(this).doQuery(TransactionOutRealm.class).findAll();
+
+        transactionsViewModel.clear();
+        mCurrentDate = new MutableDateTime();
+        try {
+            mCurrentDate.setDate(getDate(null).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        TransactionInRealm newInRealm;
+        int newInValue = 0;
+        MutableDateTime date = new MutableDateTime();
+        for (TransactionInRealm inRealm : inRealms) {
+            try {
+                newInValue += inRealm.getTotalAmount();
+                date.setDate(getDate(inRealm.getDateCreated()).getTime());
+                if (diff(mode, date)) {
+                    newInRealm = new TransactionInRealm();
+                    newInRealm.setDateCreated(inRealm.getDateCreated());
+                    newInRealm.setDescription(inRealm.getDescription());
+                    newInRealm.setTransactionType(inRealm.getTransactionTypeId());
+                    newInRealm.setTransactionCategory(inRealm.getTransactionCategory());
+                    newInRealm.setCurrentcy(inRealm.getCurrentcy());
+                    newInRealm.setTotalAmount(newInValue);
+                    transactionsViewModel.add(new TransactionInViewModel(newInRealm));
+                    mCurrentDate = date;
+                    newInValue = 0;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        TransactionOutRealm newOutRealm;
+        int newOutValue = 0;
+        for (TransactionOutRealm outRealm : outRealms) {
+            try {
+                date.setDate(getDate(outRealm.getDateCreated()).getTime());
+                newOutValue += outRealm.getTotalAmount();
+                if (diff(mode, date)) {
+                    newOutRealm = new TransactionOutRealm();
+                    newOutRealm.setDescritpion(outRealm.getDescritpion());
+                    newOutRealm.setTransactionType(outRealm.getTransactionType());
+                    newOutRealm.setTransactionCategory(outRealm.getTransactionCategory());
+                    newOutRealm.setDateCreated(outRealm.getDateCreated());
+                    newOutRealm.setCurrentcy(outRealm.getCurrentcy());
+                    newOutRealm.setTotalAmount(newOutValue);
+                    transactionsViewModel.add(new TransactionOutViewModel(newOutRealm));
+                    mCurrentDate = date;
+                    newOutValue = 0;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        mBinding.recyclerTransaction.requestLayout();
     }
 
     public void doSigOut() {
@@ -364,12 +476,10 @@ public class MainActivity extends AppCompatActivity {
             transactionsViewModel.clear();
             for (TransactionInRealm tIn : inRealms) {
                 tIncome += tIn.getTotalAmount();
-                transactionsViewModel.add(new TransactionInViewModel(tIn));
             }
 
             for (TransactionOutRealm tOut : outRealms) {
                 tExpense += tOut.getTotalAmount();
-                transactionsViewModel.add(new TransactionOutViewModel(tOut));
             }
 
             mBinding.contentDashboard.currentExpanse.setText(CurrencyUtils.currentFormat(tExpense));

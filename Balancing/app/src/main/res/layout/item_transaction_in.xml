@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:hint="Date"
                 android:singleLine="true"
-                android:text='@{DateUtils.formatDate(in.dateCreated,"yyyy-MM-dd")}' />
+                android:text='@{DateUtils.formatDate(in.dateCreated,"dd MMMM yyyy")}' />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
