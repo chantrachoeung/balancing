@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 if (drawerView.getId() == mBinding.navLeft.getId()) {
                     mDrawerLayout.closeDrawer(GravityCompat.END);
                 } else {
@@ -195,22 +194,14 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        TransactionInRealm newInRealm;
         int newInValue = 0;
         MutableDateTime date = new MutableDateTime();
         for (TransactionInRealm inRealm : inRealms) {
             try {
-                newInValue += inRealm.getTotalAmount();
+//                newInValue += inRealm.getTotalAmount();
                 date.setDate(getDate(inRealm.getDateCreated()).getTime());
                 if (diff(mode, date)) {
-                    newInRealm = new TransactionInRealm();
-                    newInRealm.setDateCreated(inRealm.getDateCreated());
-                    newInRealm.setDescription(inRealm.getDescription());
-                    newInRealm.setTransactionType(inRealm.getTransactionTypeId());
-                    newInRealm.setTransactionCategory(inRealm.getTransactionCategory());
-                    newInRealm.setCurrentcy(inRealm.getCurrentcy());
-                    newInRealm.setTotalAmount(newInValue);
-                    transactionsViewModel.add(new TransactionInViewModel(newInRealm));
+                    transactionsViewModel.add(new TransactionInViewModel(inRealm));
                     mCurrentDate = date;
                     newInValue = 0;
                 }
@@ -220,21 +211,13 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        TransactionOutRealm newOutRealm;
         int newOutValue = 0;
         for (TransactionOutRealm outRealm : outRealms) {
             try {
                 date.setDate(getDate(outRealm.getDateCreated()).getTime());
-                newOutValue += outRealm.getTotalAmount();
+//                newOutValue += outRealm.getTotalAmount();
                 if (diff(mode, date)) {
-                    newOutRealm = new TransactionOutRealm();
-                    newOutRealm.setDescritpion(outRealm.getDescritpion());
-                    newOutRealm.setTransactionType(outRealm.getTransactionType());
-                    newOutRealm.setTransactionCategory(outRealm.getTransactionCategory());
-                    newOutRealm.setDateCreated(outRealm.getDateCreated());
-                    newOutRealm.setCurrentcy(outRealm.getCurrentcy());
-                    newOutRealm.setTotalAmount(newOutValue);
-                    transactionsViewModel.add(new TransactionOutViewModel(newOutRealm));
+                    transactionsViewModel.add(new TransactionOutViewModel(outRealm));
                     mCurrentDate = date;
                     newOutValue = 0;
                 }
