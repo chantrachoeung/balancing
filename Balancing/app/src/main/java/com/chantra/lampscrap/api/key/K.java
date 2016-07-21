@@ -8,7 +8,11 @@ public interface K {
     String TYPE_ID = "type_id";
     String TYPE_NAME = "type_name";
 
-    enum TType{
-        INCOME,EXPENSE
+    enum FilterMode {
+        DAY, WEEK, MONTH, YEAR
+    }
+
+    enum TType {
+        INCOME, EXPENSE
     }
 }

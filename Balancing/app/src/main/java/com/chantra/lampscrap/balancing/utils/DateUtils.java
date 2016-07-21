@@ -1,5 +1,6 @@
 package com.chantra.lampscrap.balancing.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,6 +14,11 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateAndTime = sdf.format(new Date());
         return currentDateAndTime;
+    }
+
+    public static Date getDate(String date) throws ParseException {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.parse(date);
     }
 
     public static String formatDate(String date, String format) {
