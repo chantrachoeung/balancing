@@ -11,26 +11,14 @@ import io.realm.annotations.RealmClass;
 public class TransactionOutRealm extends RealmObject {
     @PrimaryKey
     private int id;
-    private int transactionTypeId;
+    private int transactionType;
     private double value;
     private String dateCreated;
     private int unitPrice;
-
-
-
     private double quantity;
     private double totalAmount;
     private CurrentcyRealm currentcy;
     private String descritpion;
-    private TransactionTypeRealm transcationType;
-
-    public TransactionTypeRealm getTranscationType() {
-        return transcationType;
-    }
-
-    public void setTranscationType(TransactionTypeRealm transcationType) {
-        this.transcationType = transcationType;
-    }
 
     public String getDescritpion() {
         return descritpion;
@@ -66,14 +54,6 @@ public class TransactionOutRealm extends RealmObject {
 
     private TransactionTypeRealm transactionCategory;
 
-    public int getTransactionTypeId() {
-        return transactionTypeId;
-    }
-
-    public void setTransactionTypeId(int transactionTypeId) {
-        this.transactionTypeId = transactionTypeId;
-    }
-
     public int getId() {
         return id;
     }
@@ -83,11 +63,11 @@ public class TransactionOutRealm extends RealmObject {
     }
 
     public int getTransactionType() {
-        return transactionTypeId;
+        return transactionType;
     }
 
     public void setTransactionType(int transactionType) {
-        this.transactionTypeId = transactionType;
+        this.transactionType = transactionType;
     }
 
     public double getValue() {

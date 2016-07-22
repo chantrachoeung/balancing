@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:hint="Date"
                 android:singleLine="true"
-                android:text='@{DateUtils.formatDate(out.dateCreated,"dd MMMM yyyy")}' />
+                android:text='@{DateUtils.formatDate(out.dateCreated,"yyyy-MM-dd")}' />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:hint="Value"
                 android:singleLine="true"
-                android:text="@{CurrencyUtils.currentFormat(out.totalPrice)}"
+                android:text="@{CurrencyUtils.currentFormat(out.value)}"
                 android:textColor="@color/colorAccent" />
 
             <android.support.v7.widget.AppCompatImageButton
@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Transaction Type"
-                    android:text="@{out.type}" />
+                    android:text="@{out.transactionType}" />
             </android.support.v7.widget.LinearLayoutCompat>
 
             <android.support.v7.widget.LinearLayoutCompat

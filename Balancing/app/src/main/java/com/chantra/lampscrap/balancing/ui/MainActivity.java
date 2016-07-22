@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
             TransactionTypeRealm typeRealm = tType.get(data.getExtras());
             int price = data.getExtras().getInt("price");
             int tTypeId = data.getExtras().getInt("tType");
+<<<<<<< HEAD
             String description = data.getExtras().getString("description");
             String date = data.getExtras().getString("date");
             switch (requestCode) {
@@ -257,6 +258,16 @@ public class MainActivity extends AppCompatActivity {
                 case REQUEST_ADD_INCOME:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
                     doTransaction(typeRealm, price, false, tTypeId, description, date);
+=======
+            switch (requestCode) {
+                case REQUEST_ADD_EXPENSE:
+                    mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                    doTransaction(typeRealm, price, true, tTypeId);
+                    break;
+                case REQUEST_ADD_INCOME:
+                    mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
+                    doTransaction(typeRealm, price, false, tTypeId);
+>>>>>>> parent of 539c822... More Update
                     break;
             }
         } else {
@@ -312,25 +323,39 @@ public class MainActivity extends AppCompatActivity {
 
     private static AtomicInteger id = new AtomicInteger();
 
+<<<<<<< HEAD
     private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note, String date) {
+=======
+    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype) {
+>>>>>>> parent of 539c822... More Update
         if (!expense) {
             TransactionInRealm transaction = new TransactionInRealm();
             transaction.setId(id.getAndIncrement());
             transaction.setCurrentcy(new CurrentcyRealm());
             transaction.setTransactionType(ttype);
+<<<<<<< HEAD
             transaction.setTotalAmount(price)   ;
             //transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
             transaction.setDescription(note);
             transaction.setDateCreated(date);
+=======
+            transaction.setValue(price);
+            transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTransactionCategory(typeRealm);
+>>>>>>> parent of 539c822... More Update
             RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
         } else {
             TransactionOutRealm transaction = new TransactionOutRealm();
             transaction.setId(id.getAndIncrement());
+<<<<<<< HEAD
             transaction.setTotalAmount(price);
             //transaction.setDateCreated(DateUtils.getCurrentDate());
+=======
+            transaction.setValue(price);
+            transaction.setDateCreated(DateUtils.getCurrentDate());
+>>>>>>> parent of 539c822... More Update
             transaction.setTransactionCategory(typeRealm);
-            transaction.setDescritpion(note);
             transaction.setTransactionType(ttype);
             transaction.setDateCreated(date);
             RealmHelper.init(this).addObject(transaction, transactionOutRealmChangeListener);
@@ -361,12 +386,12 @@ public class MainActivity extends AppCompatActivity {
 
             transactionsViewModel.clear();
             for (TransactionInRealm tIn : inRealms) {
-                tIncome += tIn.getTotalAmount();
+                tIncome += tIn.getValue();
                 transactionsViewModel.add(new TransactionInViewModel(tIn));
             }
 
             for (TransactionOutRealm tOut : outRealms) {
-                tExpense += tOut.getTotalAmount();
+                tExpense += tOut.getValue();
                 transactionsViewModel.add(new TransactionOutViewModel(tOut));
             }
 
