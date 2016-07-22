@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheet.requestLayout();
-                    bottomSheet.invalidate();
-                }
+//                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+//                    bottomSheet.requestLayout();
+//                    bottomSheet.invalidate();
+//                }
             }
 
             @Override
@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private DateTime mCurrentDate;
+
     private void filterBy(K.FilterMode mode) {
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         transactionsViewModel.clear();
@@ -238,6 +239,9 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        mBinding.bottomSheet.requestLayout();
+        mBinding.bottomSheet.invalidate();
     }
 
     public void doSigOut() {
