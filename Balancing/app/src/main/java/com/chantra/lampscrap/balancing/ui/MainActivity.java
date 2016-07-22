@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.chantra.lampscrap.api.adapter.BindingRecyclerAdapter;
 import com.chantra.lampscrap.api.binder.CompositeItemBinder;
 import com.chantra.lampscrap.api.binder.ItemBinder;
+import com.chantra.lampscrap.api.config_module.InitializeStaticData;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
 import com.chantra.lampscrap.api.key.K;
 import com.chantra.lampscrap.api.utils.CurrencyUtils;
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!TextUtils.isEmpty(SessionManager.init(this).getAccessToken()))
+            InitializeStaticData.init(this);
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(mBinding.toolbar);
@@ -174,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private DateTime mCurrentDate;
-
     private void filterBy(K.FilterMode mode) {
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         transactionsViewModel.clear();
@@ -189,11 +192,11 @@ public class MainActivity extends AppCompatActivity {
         for (TransactionInRealm inRealm : inRealms) {
             try {
                 boolean last = (pos == inRealms.size() - 1);
-                newInValue = newInValue + inRealm.getTotalAmount();
+                newInValue = newInValue + inRealm.getValue();
                 date.setDate(DateUtils.getDate(inRealm.getDateCreated()).getTime());
                 if (diff(mode, date) || last) {
                     inRealmNew = new TransactionInRealm();
-                    inRealmNew.setTotalAmount(newInValue);
+                    inRealmNew.setValue(newInValue);
                     inRealmNew.setTransactionCategory(inRealm.getTransactionCategory());
                     inRealmNew.setDateCreated(inRealm.getDateCreated());
                     inRealmNew.setDescription(inRealm.getDescription());
@@ -217,10 +220,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 boolean last = (pos == outRealms.size() - 1);
                 date.setDate(DateUtils.getDate(outRealm.getDateCreated()).getTime());
-                newOutValue = newOutValue + outRealm.getTotalAmount();
+                newOutValue = newOutValue + outRealm.getValue();
                 if (diff(mode, date) || last) {
                     outRealmNew = new TransactionOutRealm();
-                    outRealmNew.setTotalAmount(newOutValue);
+                    outRealmNew.setValue(newOutValue);
                     outRealmNew.setTransactionCategory(outRealm.getTransactionCategory());
                     outRealmNew.setDateCreated(outRealm.getDateCreated());
                     outRealmNew.setDescritpion(outRealm.getDescritpion());
@@ -422,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
             transaction.setId(id.getAndIncrement());
             transaction.setCurrentcy(new CurrentcyRealm());
             transaction.setTransactionType(ttype);
-            transaction.setTotalAmount(price);
+            transaction.setValue(price);
             transaction.setTransactionCategory(typeRealm);
             transaction.setDescription(note);
             transaction.setDateCreated(date);
@@ -430,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             TransactionOutRealm transaction = new TransactionOutRealm();
             transaction.setId(id.getAndIncrement());
-            transaction.setTotalAmount(price);
+            transaction.setValue(price);
             transaction.setTransactionCategory(typeRealm);
             transaction.setTransactionType(ttype);
             transaction.setDateCreated(date);
