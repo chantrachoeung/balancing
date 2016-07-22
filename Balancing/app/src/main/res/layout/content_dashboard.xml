@@ -132,6 +132,8 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:weightSum="1">
+
+
             <ImageButton
                 android:id="@+id/add_income"
                 android:layout_width="100dp"
@@ -156,6 +158,7 @@
                 android:foreground="?selectableItemBackground"
                 android:src="@drawable/ic_remove"
                 android:theme="@style/ButtonAccent" />
+
         </LinearLayout>
         <TextView
             android:id="@+id/added_income"

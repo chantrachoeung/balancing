@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:hint="Setting Name"
             android:padding="8dp"
-            android:text="\@{setting.name}" />
+            android:text="@{setting.name}" />
 
     </LinearLayout>
 </layout>

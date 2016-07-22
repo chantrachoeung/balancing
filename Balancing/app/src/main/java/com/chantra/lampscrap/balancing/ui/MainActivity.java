@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 import com.chantra.lampscrap.api.adapter.BindingRecyclerAdapter;
 import com.chantra.lampscrap.api.binder.CompositeItemBinder;
 import com.chantra.lampscrap.api.binder.ItemBinder;
-import com.chantra.lampscrap.api.config_module.InitializeStaticData;
 import com.chantra.lampscrap.api.handlers.ClickHandler;
 import com.chantra.lampscrap.api.key.K;
 import com.chantra.lampscrap.api.utils.CurrencyUtils;
@@ -74,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!TextUtils.isEmpty(SessionManager.init(this).getAccessToken()))
-            InitializeStaticData.init(this).load();
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(mBinding.toolbar);
@@ -102,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        filterBy(K.FilterMode.DAY);
         mBinding.navGroupLeft.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -177,15 +172,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
-//    private Date getDate(String date) throws ParseException {
-//        SimpleDateFormat format = new SimpleDateFormat("yyy-mm-dd");
-//        format.setTimeZone(TimeZone.getTimeZone("GMT"));
-//        if (null == date) {
-//            return format.parse(format.format(new Date()));
-//        }
-//        return format.parse(date);
-//    }
 
     private DateTime mCurrentDate;
 
@@ -365,17 +351,17 @@ public class MainActivity extends AppCompatActivity {
             TransactionTypeRealm typeRealm = tType.get(data.getExtras());
             int price = data.getExtras().getInt("price");
             int tTypeId = data.getExtras().getInt("tType");
-
             String description = data.getExtras().getString("description");
+            String date = data.getExtras().getString("date");
+
             switch (requestCode) {
                 case REQUEST_ADD_EXPENSE:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-                    doTransaction(typeRealm, price, true, tTypeId, description);
+                    doTransaction(typeRealm, price, true, tTypeId, description, date);
                     break;
                 case REQUEST_ADD_INCOME:
                     mBinding.contentDashboard.circleViewBalance.setCircleColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-                    doTransaction(typeRealm, price, false, tTypeId, description);
-                    break;
+                    doTransaction(typeRealm, price, false, tTypeId, description, date);
             }
         } else {
             Toast.makeText(this, "Canceled Request", Toast.LENGTH_SHORT).show();
@@ -430,27 +416,24 @@ public class MainActivity extends AppCompatActivity {
 
     private static AtomicInteger id = new AtomicInteger();
 
-    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note) {
+    private void doTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note, String date) {
         if (!expense) {
             TransactionInRealm transaction = new TransactionInRealm();
             transaction.setId(id.getAndIncrement());
             transaction.setCurrentcy(new CurrentcyRealm());
             transaction.setTransactionType(ttype);
             transaction.setTotalAmount(price);
-
-            transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
             transaction.setDescription(note);
+            transaction.setDateCreated(date);
             RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
         } else {
             TransactionOutRealm transaction = new TransactionOutRealm();
-
             transaction.setId(id.getAndIncrement());
             transaction.setTotalAmount(price);
-            transaction.setDateCreated(DateUtils.getCurrentDate());
             transaction.setTransactionCategory(typeRealm);
-            transaction.setDescritpion(note);
             transaction.setTransactionType(ttype);
+            transaction.setDateCreated(date);
             RealmHelper.init(this).addObject(transaction, transactionOutRealmChangeListener);
         }
     }
@@ -478,11 +461,13 @@ public class MainActivity extends AppCompatActivity {
             double tIncome = 0;
 
             for (TransactionInRealm tIn : inRealms) {
-                tIncome += tIn.getTotalAmount();
+                tIncome += tIn.getValue();
+                transactionsViewModel.add(new TransactionInViewModel(tIn));
             }
 
             for (TransactionOutRealm tOut : outRealms) {
-                tExpense += tOut.getTotalAmount();
+                tExpense += tOut.getValue();
+                transactionsViewModel.add(new TransactionOutViewModel(tOut));
             }
 
             mBinding.contentDashboard.currentExpanse.setText(CurrencyUtils.currentFormat(tExpense));
@@ -506,5 +491,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    public void doDirectTransaction(TransactionTypeRealm typeRealm, int price, boolean expense, int ttype, String note, String date) {
+        if (!expense) {
+            TransactionInRealm transaction = new TransactionInRealm();
+            transaction.setId(id.getAndIncrement());
+            transaction.setCurrentcy(new CurrentcyRealm());
+            transaction.setTransactionType(ttype);
+            transaction.setTotalAmount(price);
+
+            //transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTransactionCategory(typeRealm);
+            transaction.setDescription(note);
+            transaction.setDateCreated(date);
+            RealmHelper.init(this).addObject(transaction, transactionInRealmChangeListener);
+        } else {
+            TransactionOutRealm transaction = new TransactionOutRealm();
+
+            transaction.setId(id.getAndIncrement());
+            transaction.setTotalAmount(price);
+            //transaction.setDateCreated(DateUtils.getCurrentDate());
+            transaction.setTransactionCategory(typeRealm);
+            transaction.setDescritpion(note);
+            transaction.setTransactionType(ttype);
+            transaction.setDateCreated(date);
+            RealmHelper.init(this).addObject(transaction, transactionOutRealmChangeListener);
+        }
     }
 }

@@ -32,6 +32,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.realm.RealmResults;
+
+
+
 public class TransactionActivity extends AppCompatActivity implements OnTypeFragmentListener<TTypeViewModel> {
     private ActivityTransactionBinding mBinding;
 
@@ -54,10 +58,10 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         setDateView(getCurrentDate(Calendar.getInstance().getTime()));
 
         View specifictBox = findViewById(R.id.specifict_type_layout);
-        if (typeId() > -1) {
+        if(typeId() > -1){
             specifictBox.setVisibility(View.VISIBLE);
             loadSpecific();
-        } else {
+        }else{
             specifictBox.setVisibility(View.GONE);
             loadType();
         }
@@ -75,31 +79,25 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
             public void onClick(View v) {
             }
         });
+
+        mBinding.buttonSpecifictType.setOnClickListener(new View.OnClickListener(){
+          @Override
+            public void onClick(View v){
+              Intent intent = new Intent();
+              //int type = intent.getExtras().getInt("type");
+              //type = 1;
+              //TTypeViewModel tTypeModel = new TTypeViewModel();
+              //TTypeViewModel ttypeRealm = RealmHelper.init(getContext()).doQuery(TTypeViewModel.class).equalTo("id", type).findFirst();
+              specifictExpanse(200,typeId() );
+          }
+        });
+
     }
+
+
 
     private void loadSpecific() {
         mBinding.buttonSpecifictType.setText("Add to " + typeName());
-        mBinding.buttonSpecifictType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TType tType = new TType();
-                if (typeId() < 0)
-                    return;
-                TransactionTypeRealm typeRealm = RealmHelper.init(TransactionActivity.this).doQuery(TransactionTypeRealm.class).equalTo("id", typeId()).findFirst();
-                if (typeRealm == null)
-                    return;
-                tType.put(typeRealm);
-
-                Intent intent = new Intent();
-                Bundle bundle = tType.toData();
-                bundle.putString("date", String.valueOf(mBinding.tvDateTime.getText()));
-                bundle.putInt("price", Integer.valueOf(mBinding.edtTransactionAmount.getText().toString()));
-                bundle.putString("description", String.valueOf(mBinding.tranNote.getText()));
-                intent.putExtras(bundle);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
     }
 
     private void setDateView(String date) {
@@ -198,6 +196,8 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
         return currentDate;
     }
 
+
+
     @Override
     public void onAction(int action, TTypeViewModel item) {
         TType tType = new TType();
@@ -225,11 +225,29 @@ public class TransactionActivity extends AppCompatActivity implements OnTypeFrag
 
         Intent intent = new Intent();
         Bundle bundle = tType.toData();
+        bundle.putInt("price", Integer.valueOf(mBinding.edtTransactionAmount.getText().toString()));
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void specifictExpanse(int action, int item_id) {
+        RealmResults<TransactionTypeRealm> typeRealms = RealmHelper.init(this).doQuery(TransactionTypeRealm.class).equalTo("id", item_id).findAll();
+
+        TType tType = new TType();
+
+        for (TransactionTypeRealm tTypeObj : typeRealms) {
+            tType.put(tTypeObj);
+        }
+
+        Intent intent = new Intent();
+        Bundle bundle = tType.toData();
         bundle.putString("date", String.valueOf(mBinding.tvDateTime.getText()));
         bundle.putInt("price", Integer.valueOf(mBinding.edtTransactionAmount.getText().toString()));
         bundle.putString("description", String.valueOf(mBinding.tranNote.getText()));
         intent.putExtras(bundle);
         setResult(RESULT_OK, intent);
         finish();
+
     }
 }

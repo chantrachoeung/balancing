@@ -11,7 +11,7 @@ import io.realm.annotations.RealmClass;
 public class TransactionInRealm extends RealmObject {
     @PrimaryKey
     private int id;
-    private int transactionTypeId;
+    private int transactionType;
     private double value;
     private String dateCreated;
     private int unitPrice;
@@ -38,12 +38,12 @@ public class TransactionInRealm extends RealmObject {
         this.id = id;
     }
 
-    public int getTransactionTypeId() {
-        return transactionTypeId;
+    public int getTransactionType() {
+        return transactionType;
     }
 
-    public void setTransactionType(int transactionTypeId) {
-        this.transactionTypeId = transactionTypeId;
+    public void setTransactionType(int transactionType) {
+        this.transactionType = transactionType;
     }
 
     public double getValue() {
@@ -60,10 +60,6 @@ public class TransactionInRealm extends RealmObject {
 
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
-    }
-
-    public void setTransactionTypeId(int transactionTypeId) {
-        this.transactionTypeId = transactionTypeId;
     }
 
     public TransactionTypeRealm getTransactionCategory() {
