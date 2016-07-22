@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -47,14 +48,12 @@ import com.chantra.lampscrap.balancing.viewmodel.TransactionOutViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TransactionViewModel;
 import com.chantra.lampscrap.balancing.viewmodel.TransactionsViewModel;
 
+import org.joda.time.DateTime;
 import org.joda.time.Months;
 import org.joda.time.MutableDateTime;
 import org.joda.time.Weeks;
 import org.joda.time.Years;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.realm.Case;
@@ -88,18 +87,22 @@ public class MainActivity extends AppCompatActivity {
         mBinding.setView(this);
 
         behavior = BottomSheetBehavior.from(mBinding.bottomSheet);
-//        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-//            @Override
-//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-//                // React to state change
-//            }
-//
-//            @Override
-//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-//                // React to dragging events
-//            }
-//        });
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheet.requestLayout();
+                    bottomSheet.invalidate();
+                }
+            }
 
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+//        filterBy(K.FilterMode.DAY);
         mBinding.navGroupLeft.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -154,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean diff(K.FilterMode mode, MutableDateTime date) {
+        boolean isNull = mCurrentDate == null || date == null;
+        if (isNull)
+            return false;
         if (mode == K.FilterMode.YEAR) {
             int num = Years.yearsBetween(date, mCurrentDate).getYears();
             if (num > 0)
@@ -172,62 +178,77 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private Date getDate(String date) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyy-mm-dd");
-        if (null == date) {
-            return format.parse(format.format(new Date()));
-        }
-        return format.parse(date);
-    }
+//    private Date getDate(String date) throws ParseException {
+//        SimpleDateFormat format = new SimpleDateFormat("yyy-mm-dd");
+//        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+//        if (null == date) {
+//            return format.parse(format.format(new Date()));
+//        }
+//        return format.parse(date);
+//    }
 
-    private MutableDateTime mCurrentDate;
+    private DateTime mCurrentDate;
 
     private void filterBy(K.FilterMode mode) {
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        transactionsViewModel.clear();
         RealmResults<TransactionInRealm> inRealms = RealmHelper.init(this).doQuery(TransactionInRealm.class).findAll();
         RealmResults<TransactionOutRealm> outRealms = RealmHelper.init(this).doQuery(TransactionOutRealm.class).findAll();
 
-        transactionsViewModel.clear();
-        mCurrentDate = new MutableDateTime();
-        try {
-            mCurrentDate.setDate(getDate(null).getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        int newInValue = 0;
+        double newInValue = 0;
         MutableDateTime date = new MutableDateTime();
+        int pos = 0;
+        mCurrentDate = new DateTime();
+        TransactionInRealm inRealmNew;
         for (TransactionInRealm inRealm : inRealms) {
             try {
-//                newInValue += inRealm.getTotalAmount();
-                date.setDate(getDate(inRealm.getDateCreated()).getTime());
-                if (diff(mode, date)) {
-                    transactionsViewModel.add(new TransactionInViewModel(inRealm));
-                    mCurrentDate = date;
+                boolean last = (pos == inRealms.size() - 1);
+                newInValue = newInValue + inRealm.getTotalAmount();
+                date.setDate(DateUtils.getDate(inRealm.getDateCreated()).getTime());
+                if (diff(mode, date) || last) {
+                    inRealmNew = new TransactionInRealm();
+                    inRealmNew.setTotalAmount(newInValue);
+                    inRealmNew.setTransactionCategory(inRealm.getTransactionCategory());
+                    inRealmNew.setDateCreated(inRealm.getDateCreated());
+                    inRealmNew.setDescription(inRealm.getDescription());
+                    transactionsViewModel.add(new TransactionInViewModel(inRealmNew));
+                    mCurrentDate = date.toDateTime();
                     newInValue = 0;
+                    pos = 0;
+                } else {
+                    pos++;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
 
-        int newOutValue = 0;
+        mCurrentDate = new DateTime();
+        double newOutValue = 0;
+        pos = 0;
+        TransactionOutRealm outRealmNew;
         for (TransactionOutRealm outRealm : outRealms) {
             try {
-                date.setDate(getDate(outRealm.getDateCreated()).getTime());
-//                newOutValue += outRealm.getTotalAmount();
-                if (diff(mode, date)) {
-                    transactionsViewModel.add(new TransactionOutViewModel(outRealm));
-                    mCurrentDate = date;
+                boolean last = (pos == outRealms.size() - 1);
+                date.setDate(DateUtils.getDate(outRealm.getDateCreated()).getTime());
+                newOutValue = newOutValue + outRealm.getTotalAmount();
+                if (diff(mode, date) || last) {
+                    outRealmNew = new TransactionOutRealm();
+                    outRealmNew.setTotalAmount(newOutValue);
+                    outRealmNew.setTransactionCategory(outRealm.getTransactionCategory());
+                    outRealmNew.setDateCreated(outRealm.getDateCreated());
+                    outRealmNew.setDescritpion(outRealm.getDescritpion());
+                    transactionsViewModel.add(new TransactionOutViewModel(outRealmNew));
+                    mCurrentDate = date.toDateTime();
                     newOutValue = 0;
+                    pos = 0;
+                } else {
+                    pos++;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        mBinding.recyclerTransaction.requestLayout();
     }
 
     public void doSigOut() {
@@ -456,7 +477,6 @@ public class MainActivity extends AppCompatActivity {
             double tExpense = 0;
             double tIncome = 0;
 
-            transactionsViewModel.clear();
             for (TransactionInRealm tIn : inRealms) {
                 tIncome += tIn.getTotalAmount();
             }

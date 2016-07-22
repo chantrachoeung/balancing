@@ -14,8 +14,6 @@ import com.chantra.lampscrap.balancing.respository.RealmHelper;
 import com.chantra.lampscrap.balancing.respository.objects.UserRealm;
 import com.chantra.lampscrap.balancing.utils.DateUtils;
 
-import io.realm.RealmChangeListener;
-
 public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding mBinding;
@@ -87,14 +85,14 @@ public class SignUpActivity extends AppCompatActivity {
         userRealm.setName(name);
         userRealm.setPassword(pass);
         userRealm.setSignUpDate(DateUtils.getCurrentDate());
-        RealmHelper.init(this).addObject(userRealm, new RealmChangeListener() {
+        RealmHelper.init(this).addObject(userRealm);
+        mBinding.getRoot().postDelayed(new Runnable() {
             @Override
-            public void onChange(Object element) {
-                if (null != progressDialog)
-                    progressDialog.dismiss();
+            public void run() {
+                progressDialog.dismiss();
                 goLogin();
             }
-        });
+        }, 500);
     }
 }
 

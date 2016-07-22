@@ -53,6 +53,8 @@
                     android:id="@+id/bottom_sheet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:fitsSystemWindows="true"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_behavior="@string/bottom_sheet_behavior">
@@ -64,7 +66,8 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="All Transaction"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:visibility="visible" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_transaction"
@@ -73,8 +76,8 @@
                         android:background="#fff"
                         android:orientation="vertical"
                         app:clickHandler="@{view.clickHandler}"
-                        app:itemViewBinder="@{view.itemViewBinder}"
                         app:hasDividerVertical="@{true}"
+                        app:itemViewBinder="@{view.itemViewBinder}"
                         app:items="@{trans.items}"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
